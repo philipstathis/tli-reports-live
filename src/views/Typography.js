@@ -31,7 +31,7 @@ class Typography extends React.Component {
                 <CardHeader className="mb-5">
                   <h5 className="card-category">Black Table Heading</h5>
                   <CardTitle tag="h3">
-                    Created using Poppins Font Family
+                    PAGE UNDER CONSTRUCTION, COME BACK SOON
                   </CardTitle>
                 </CardHeader>
                 <CardBody>

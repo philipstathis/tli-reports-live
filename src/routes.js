@@ -15,28 +15,20 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Dashboard.js";
-import TableList from "views/TableList.js";
+import App from "App.js";
 import Typography from "views/Typography.js";
 
 var routes = [
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: "tim-icons icon-chart-pie-36",
-    component: Dashboard,
-    layout: "/tli-reports-live"
-  },
-  {
-    path: "/tables",
-    name: "Table List",
+    path: "/club-report",
+    name: "Club Registration Report",
     icon: "tim-icons icon-puzzle-10",
-    component: TableList,
+    component: App,
     layout: "/tli-reports-live"
   },
   {
     path: "/typography",
-    name: "Typography",
+    name: "Check In (Under Construction)",
     icon: "tim-icons icon-align-center",
     component: Typography,
     layout: "/tli-reports-live"

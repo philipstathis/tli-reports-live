@@ -17,7 +17,7 @@ class App extends Component {
       },{
         headerName: "Toastmasters Club Number", field: "answers.clubNumber"
       }, {
-        headerName: "Confirmed", field: "checked_in"
+        headerName: "Attended", field: "checked_in"
       }],
     }
   }
@@ -50,10 +50,10 @@ class App extends Component {
   render() {
     return (
       <div
-        className="ag-theme-alpine"
+        className="content ag-theme-alpine"
         style={{
         height: '500px',
-        width: '1000px' 
+        width: '1200px' 
       }
       }
       >
