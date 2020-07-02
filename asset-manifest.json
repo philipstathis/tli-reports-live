@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/tli-reports-live/static/css/main.5f361e03.chunk.css",
+    "main.js": "/tli-reports-live/static/js/main.63a88ca7.chunk.js",
+    "main.js.map": "/tli-reports-live/static/js/main.63a88ca7.chunk.js.map",
+    "runtime-main.js": "/tli-reports-live/static/js/runtime-main.9d5de38a.js",
+    "runtime-main.js.map": "/tli-reports-live/static/js/runtime-main.9d5de38a.js.map",
+    "static/js/2.80c0bf81.chunk.js": "/tli-reports-live/static/js/2.80c0bf81.chunk.js",
+    "static/js/2.80c0bf81.chunk.js.map": "/tli-reports-live/static/js/2.80c0bf81.chunk.js.map",
+    "index.html": "/tli-reports-live/index.html",
+    "precache-manifest.ed282938c563b3e8b9b2712a3354a4ca.js": "/tli-reports-live/precache-manifest.ed282938c563b3e8b9b2712a3354a4ca.js",
+    "service-worker.js": "/tli-reports-live/service-worker.js",
+    "static/css/main.5f361e03.chunk.css.map": "/tli-reports-live/static/css/main.5f361e03.chunk.css.map",
+    "static/js/2.80c0bf81.chunk.js.LICENSE.txt": "/tli-reports-live/static/js/2.80c0bf81.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/tli-reports-live/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9d5de38a.js",
+    "static/js/2.80c0bf81.chunk.js",
+    "static/css/main.5f361e03.chunk.css",
+    "static/js/main.63a88ca7.chunk.js"
+  ]
+}
