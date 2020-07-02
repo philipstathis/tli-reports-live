@@ -1,26 +1,29 @@
 {
   "files": {
-    "main.css": "/tli-reports-live/static/css/main.2b2c4c67.chunk.css",
-    "main.js": "/tli-reports-live/static/js/main.9abab522.chunk.js",
-    "main.js.map": "/tli-reports-live/static/js/main.9abab522.chunk.js.map",
+    "main.css": "/tli-reports-live/static/css/main.6dc73a9e.chunk.css",
+    "main.js": "/tli-reports-live/static/js/main.9a3596c9.chunk.js",
+    "main.js.map": "/tli-reports-live/static/js/main.9a3596c9.chunk.js.map",
     "runtime-main.js": "/tli-reports-live/static/js/runtime-main.9d5de38a.js",
     "runtime-main.js.map": "/tli-reports-live/static/js/runtime-main.9d5de38a.js.map",
-    "static/js/2.58ab5de2.chunk.js": "/tli-reports-live/static/js/2.58ab5de2.chunk.js",
-    "static/js/2.58ab5de2.chunk.js.map": "/tli-reports-live/static/js/2.58ab5de2.chunk.js.map",
+    "static/css/2.daf4b330.chunk.css": "/tli-reports-live/static/css/2.daf4b330.chunk.css",
+    "static/js/2.2b73a23e.chunk.js": "/tli-reports-live/static/js/2.2b73a23e.chunk.js",
+    "static/js/2.2b73a23e.chunk.js.map": "/tli-reports-live/static/js/2.2b73a23e.chunk.js.map",
     "index.html": "/tli-reports-live/index.html",
-    "precache-manifest.ffc1cb26321742b0476362f80d065f3b.js": "/tli-reports-live/precache-manifest.ffc1cb26321742b0476362f80d065f3b.js",
+    "precache-manifest.e4d47626e9a1ac6af5d4250cbdb109c6.js": "/tli-reports-live/precache-manifest.e4d47626e9a1ac6af5d4250cbdb109c6.js",
     "service-worker.js": "/tli-reports-live/service-worker.js",
-    "static/css/main.2b2c4c67.chunk.css.map": "/tli-reports-live/static/css/main.2b2c4c67.chunk.css.map",
-    "static/js/2.58ab5de2.chunk.js.LICENSE.txt": "/tli-reports-live/static/js/2.58ab5de2.chunk.js.LICENSE.txt",
-    "static/js/main.9abab522.chunk.js.LICENSE.txt": "/tli-reports-live/static/js/main.9abab522.chunk.js.LICENSE.txt",
+    "static/css/2.daf4b330.chunk.css.map": "/tli-reports-live/static/css/2.daf4b330.chunk.css.map",
+    "static/css/main.6dc73a9e.chunk.css.map": "/tli-reports-live/static/css/main.6dc73a9e.chunk.css.map",
+    "static/js/2.2b73a23e.chunk.js.LICENSE.txt": "/tli-reports-live/static/js/2.2b73a23e.chunk.js.LICENSE.txt",
+    "static/js/main.9a3596c9.chunk.js.LICENSE.txt": "/tli-reports-live/static/js/main.9a3596c9.chunk.js.LICENSE.txt",
     "static/media/anime3.png": "/tli-reports-live/static/media/anime3.bd6820f1.png",
     "static/media/nucleo-icons.css": "/tli-reports-live/static/media/nucleo.f0b489a5.woff",
     "static/media/react-logo.png": "/tli-reports-live/static/media/react-logo.eb6be414.png"
   },
   "entrypoints": [
     "static/js/runtime-main.9d5de38a.js",
-    "static/js/2.58ab5de2.chunk.js",
-    "static/css/main.2b2c4c67.chunk.css",
-    "static/js/main.9abab522.chunk.js"
+    "static/css/2.daf4b330.chunk.css",
+    "static/js/2.2b73a23e.chunk.js",
+    "static/css/main.6dc73a9e.chunk.css",
+    "static/js/main.9a3596c9.chunk.js"
   ]
 }
