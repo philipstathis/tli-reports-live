@@ -38,12 +38,10 @@ class App extends Component {
         return obj["question_id"] === "34370854";
       });
       if (clubName) { answerObjects["clubName"] = clubName["answer"] }
-      // else { answerObjects["clubName"] = '';}
       let clubNumber = answerObjects.find(obj => {
         return obj["question_id"] === "34370856";
       });
       if (clubNumber) { answerObjects["clubNumber"] = clubNumber["answer"] }
-      // else { answerObjects["clubNumber"] = '';}
       return attendee;
     }))
     .then(rowData => this.setState({rowData}))
