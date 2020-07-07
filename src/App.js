@@ -36,13 +36,8 @@ class App extends Component {
       return Promise.all(responses.map(function (response) {
         return response.json();
       }));
-    }).then(data => data.reduce(function (answerObjects, response) { 
-        console.log('um');
-        console.log(answerObjects);
-        console.log('what');
-        console.log(response);
+    }).then(data => data.reduce(function (answerObjects, response) {
         return Array.prototype.concat(answerObjects, response["attendees"].map(attendee => {
-          console.log(attendee);
           answerObjects = attendee.answers;
           if (answerObjects){
             let roleAnswer = answerObjects.find(obj => {
