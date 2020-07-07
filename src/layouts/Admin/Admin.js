@@ -21,10 +21,9 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import PerfectScrollbar from "perfect-scrollbar";
 
 // core components
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
+import App from "App.js";
 
 import routes from "routes.js";
 
@@ -78,18 +77,13 @@ class Admin extends React.Component {
     this.setState({ sidebarOpened: !this.state.sidebarOpened });
   };
   getRoutes = routes => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "/tli-reports-live") {
-        return (
+    return routes.map((prop, key) => {return (
           <Route
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
           />
         );
-      } else {
-        return null;
-      }
     });
   };
   handleBgClick = color => {
@@ -116,8 +110,8 @@ class Admin extends React.Component {
             routes={routes}
             bgColor={this.state.backgroundColor}
             logo={{
-              outterLink: "https://www.creative-tim.com/",
-              text: "DISTRICT 46",
+              outterLink: "https://toastmasters46.org",
+              text: "TLI DISTRICT 46",
               imgSrc: logo
             }}
             toggleSidebar={this.toggleSidebar}
@@ -127,15 +121,10 @@ class Admin extends React.Component {
             ref="mainPanel"
             data={this.state.backgroundColor}
           >
-            <AdminNavbar
-              {...this.props}
-              brandText={this.getBrandText(this.props.location.pathname)}
-              toggleSidebar={this.toggleSidebar}
-              sidebarOpened={this.state.sidebarOpened}
-            />
             <Switch>
-              {this.getRoutes(routes)}
-              <Redirect from="*" to="/tli-reports-live/dashboard"/>
+              {/* {this.getRoutes(routes)} */}
+              <Route from="/tli-reports-live" render={props => <App {...props} />} />
+              <Redirect from="*" to="/tli-reports-live?club-report"/>
             </Switch>
             {// we don't want the Footer to be rendered on map page
             this.props.location.pathname.indexOf("maps") !== -1 ? null : (
@@ -143,10 +132,6 @@ class Admin extends React.Component {
             )}
           </div>
         </div>
-        <FixedPlugin
-          bgColor={this.state.backgroundColor}
-          handleBgClick={this.handleBgClick}
-        />
       </>
     );
   }

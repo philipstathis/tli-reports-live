@@ -20,15 +20,15 @@ import Typography from "views/Typography.js";
 
 var routes = [
   {
-    path: "/club-report",
+    path: "?club-report",
     name: "Club Registration Report",
     icon: "tim-icons icon-puzzle-10",
     component: App,
     layout: "/tli-reports-live"
   },
   {
-    path: "/typography",
-    name: "Check In (Under Construction)",
+    path: "?typography",
+    name: "Check In (Work in Progress)",
     icon: "tim-icons icon-align-center",
     component: Typography,
     layout: "/tli-reports-live"

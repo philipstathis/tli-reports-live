@@ -29,10 +29,10 @@ import "assets/css/nucleo-icons.css";
 const hist = createBrowserHistory();
 
 ReactDOM.render(
-  <Router history={hist}>
+  <Router history={hist} >
     <Switch>
-      <Route path="/tli-reports-live" render={props => <AdminLayout {...props} />} />
-      <Redirect from="/" to="/tli-reports-live/club-report" />
+      <Route from="/tli-reports-live" render={props => <AdminLayout {...props} />} />
+      <Redirect from="/" to="/tli-reports-live?club-report" />
     </Switch>
   </Router>,
   document.getElementById("root")
