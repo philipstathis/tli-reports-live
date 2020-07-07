@@ -23,28 +23,51 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events')
-    .then(result => result.json())
-    .then(result => result["attendees"])
-    .then(result => result.map(attendee => {
-      let answerObjects = attendee.answers;
-      let roleAnswer = answerObjects.find(obj => {
-        return obj["question_id"] === "34234268";
-      });
-      if (roleAnswer) {
-        answerObjects["role"] = roleAnswer["answer"]
-      }
-      let clubName = answerObjects.find(obj => {
-        return obj["question_id"] === "34370854";
-      });
-      if (clubName) { answerObjects["clubName"] = clubName["answer"] }
-      let clubNumber = answerObjects.find(obj => {
-        return obj["question_id"] === "34370856";
-      });
-      if (clubNumber) { answerObjects["clubNumber"] = clubNumber["answer"] }
-      return attendee;
-    }))
-    .then(rowData => this.setState({rowData}))
+    Promise.all([
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731167904'),
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731189970'),
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731193982'),
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731204012'),
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731218054'),
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731222066'),
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/111884208680'), // TLI Dry Run
+    ]).then(function (responses) {
+      // Get a JSON object from each of the responses
+      return Promise.all(responses.map(function (response) {
+        return response.json();
+      }));
+    }).then(data => data.reduce(function (answerObjects, response) { 
+        console.log('um');
+        console.log(answerObjects);
+        console.log('what');
+        console.log(response);
+        return Array.prototype.concat(answerObjects, response["attendees"].map(attendee => {
+          console.log(attendee);
+          answerObjects = attendee.answers;
+          if (answerObjects){
+            let roleAnswer = answerObjects.find(obj => {
+              return obj["question_id"] === "34234268";
+            });
+            if (roleAnswer) {
+              answerObjects["role"] = roleAnswer["answer"]
+            }
+            let clubName = answerObjects.find(obj => {
+              return obj["question_id"] === "34370854";
+            });
+            if (clubName) { answerObjects["clubName"] = clubName["answer"] }
+            let clubNumber = answerObjects.find(obj => {
+              return obj["question_id"] === "34370856";
+            });
+            if (clubNumber) { answerObjects["clubNumber"] = clubNumber["answer"] }
+          }
+          return attendee;
+        }));
+      }, [])
+    ).then(rowData => this.setState({rowData}))
+    .catch(function (error) {
+      // if there's an error, log it
+      console.log(error);
+    })
   }
 
   render() {
