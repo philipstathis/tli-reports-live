@@ -70,8 +70,8 @@ class App extends Component {
       <div
         className="content ag-theme-alpine"
         style={{
-        height: '500px',
-        width: '1200px' 
+        height: '100%',
+        width: '100%' 
       }
       }
       >
