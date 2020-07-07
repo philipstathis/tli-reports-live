@@ -32,7 +32,7 @@ ReactDOM.render(
   <Router history={hist} >
     <Switch>
       <Route from="/tli-reports-live" render={props => <AdminLayout {...props} />} />
-      <Redirect from="/" to="/tli-reports-live?club-report" />
+      <Redirect from="*" to="/tli-reports-live?club-report" />
     </Switch>
   </Router>,
   document.getElementById("root")
