@@ -9,13 +9,15 @@ class App extends Component {
     super(props);
     this.state = {
       columnDefs: [{
-        headerName: "First Name", field: "profile.first_name", sortable: true, filter: true
+        headerName: "First Name", field: "first_name", sortable: true, filter: true, resizable: true
       }, {
-        headerName: "Officer Role Selected", field: "answers.role"
+        headerName: "Officer Role Selected", field: "role", sortable: true, filter: true, resizable: true
       },{
-        headerName: "Toastmasters Club Name", field: "answers.clubName"
+        headerName: "Toastmasters Club Name", field: "clubName", sortable: true, filter: true, resizable: true
       },{
-        headerName: "Toastmasters Club Number", field: "answers.clubNumber"
+        headerName: "Toastmasters Division", field: "division", sortable: true, filter: true, resizable: true
+      },{
+        headerName: "Toastmasters Area", field: "area", sortable: true, filter: true, resizable: true
       }, {
         headerName: "Attended", field: "checked_in"
       }],
@@ -30,33 +32,14 @@ class App extends Component {
       fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731204012'),
       fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731218054'),
       fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731222066'),
-      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/111884208680'), // TLI Dry Run
+      // fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/111884208680'), // TLI Dry Run
     ]).then(function (responses) {
       // Get a JSON object from each of the responses
       return Promise.all(responses.map(function (response) {
         return response.json();
       }));
     }).then(data => data.reduce(function (answerObjects, response) {
-        return Array.prototype.concat(answerObjects, response["attendees"].map(attendee => {
-          answerObjects = attendee.answers;
-          if (answerObjects){
-            let roleAnswer = answerObjects.find(obj => {
-              return obj["question_id"] === "34234268";
-            });
-            if (roleAnswer) {
-              answerObjects["role"] = roleAnswer["answer"]
-            }
-            let clubName = answerObjects.find(obj => {
-              return obj["question_id"] === "34370854";
-            });
-            if (clubName) { answerObjects["clubName"] = clubName["answer"] }
-            let clubNumber = answerObjects.find(obj => {
-              return obj["question_id"] === "34370856";
-            });
-            if (clubNumber) { answerObjects["clubNumber"] = clubNumber["answer"] }
-          }
-          return attendee;
-        }));
+        return Array.prototype.concat(answerObjects, response);
       }, [])
     ).then(rowData => this.setState({rowData}))
     .catch(function (error) {
