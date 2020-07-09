@@ -16,21 +16,21 @@
 
 */
 import App from "App.js";
-import Typography from "views/Typography.js";
+import UserProfile from "views/UserProfile.js";
 
 var routes = [
   {
     path: "?club-report",
     name: "Club Registration Report",
-    icon: "tim-icons icon-puzzle-10",
+    icon: "tim-icons icon-chart-pie-36",
     component: App,
     layout: "/tli-reports-live"
   },
   {
-    path: "?typography",
-    name: "Check In (Work in Progress)",
-    icon: "tim-icons icon-align-center",
-    component: Typography,
+    path: "?attendee-check-in",
+    name: "Check-In",
+    icon: "tim-icons icon-single-02",
+    component: UserProfile,
     layout: "/tli-reports-live"
   }
 ];

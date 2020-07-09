@@ -24,7 +24,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import App from "App.js";
-import Typography from "views/Typography.js";
+import UserProfile from "views/UserProfile.js";
 
 import routes from "routes.js";
 
@@ -124,10 +124,10 @@ class Admin extends React.Component {
           >
             <Switch>
               {this.props.location.search.indexOf("club-report") === -1 ? null : (
-                <Route path="/tli-reports-live" search="?club-report" ><App></App></Route>
+                <Route path="/tli-reports-live" search="?club-report" ><App/></Route>
               )}
-              {this.props.location.search.indexOf("typography") === -1 ? null : (
-                <Route path="/tli-reports-live" search="?typography" ><Typography></Typography></Route>
+              {this.props.location.search.indexOf("attendee-check-in") === -1 ? null : (
+                <Route path="/tli-reports-live" search="?attendee-check-in" ><UserProfile/></Route>
               )}
               <Route path="/tli-reports-live" search=""><App></App></Route>
               <Redirect from="*" to="/tli-reports-live?club-report"/>
