@@ -9,16 +9,16 @@ class App extends Component {
     super(props);
     this.state = {
       columnDefs: [{
-        headerName: "First Name", field: "first_name", sortable: true, filter: true, resizable: true
-      }, {
-        headerName: "Officer Role Selected", field: "role", sortable: true, filter: true, resizable: true
-      },{
-        headerName: "Toastmasters Club Name", field: "clubName", sortable: true, filter: true, resizable: true
-      },{
         headerName: "Toastmasters Division", field: "division", sortable: true, filter: true, resizable: true
       },{
         headerName: "Toastmasters Area", field: "area", sortable: true, filter: true, resizable: true
-      }, {
+      },{
+        headerName: "Toastmasters Club Name", field: "clubName", sortable: true, filter: true, resizable: true
+      },{
+        headerName: "Officer Role Selected", field: "role", sortable: true, filter: true, resizable: true
+      },{
+        headerName: "First Name", field: "first_name", sortable: true, filter: true, resizable: true
+      },{
         headerName: "Attended", field: "checked_in"
       }],
     }
@@ -31,8 +31,7 @@ class App extends Component {
       fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731193982'),
       fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731204012'),
       fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731218054'),
-      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731222066'),
-      // fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/111884208680'), // TLI Dry Run
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731222066')
     ]).then(function (responses) {
       // Get a JSON object from each of the responses
       return Promise.all(responses.map(function (response) {

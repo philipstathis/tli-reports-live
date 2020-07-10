@@ -33,6 +33,42 @@ import {
 } from "reactstrap";
 
 class UserProfile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+        [e.target.name]: e.target.value
+    });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/todos', {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify( {
+          'attendeeEmail': this.state.attendeeEmail,
+          'eventPassword': this.state.eventPassword 
+        }),
+        method: 'POST'
+    }).then( response => response.json()).then(res => {
+      console.log(res);
+      if (res.id){
+        this.setState({disabled: true, completeMessage: 'Check-In Complete, Thank You!'});
+      }else {
+        alert("Message failed to send. Did you enter the Correct Access Code? E-mail district46officerstraining@gmail.com for support.");
+      }
+    }).catch(e => console.log(e));
+  }
+
   render() {
     return (
       <>
@@ -41,17 +77,21 @@ class UserProfile extends React.Component {
           <Col md="12">
               <Card>
                 <CardHeader>
-                  <h5 className="title">Please complete the information below to check-in and then proceed to the event evaluation form</h5>
+                  <h5 className="title">Please complete the information below to Confirm Attendance</h5>
                 </CardHeader>
-                <CardBody>
-                  <Form>
+                  <Form
+                    method={this.props.method}
+                    onSubmit={this.handleSubmit}>
+                  <CardBody>
                     <Row>
                       <Col className="pr-md-1" md="6">
                         <FormGroup>
                           <label>Event Access Code (Shared during Training)</label>
                           <Input
                             placeholder="accesscode"
-                            type="password"
+                            type="text"
+                            name="eventPassword"
+                            onChange={this.handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -60,25 +100,31 @@ class UserProfile extends React.Component {
                           <label htmlFor="exampleInputEmail1">
                             Attendee Email address (Same one used in Eventbrite)
                           </label>
-                          <Input placeholder="mike@email.com" type="email" />
+                          <Input placeholder="mike@email.com"
+                                 type="email"
+                                 name="attendeeEmail"
+                                 onChange={this.handleChange} />
                         </FormGroup>
                       </Col>
                     </Row>
-                  </Form>
                 </CardBody>
                 <CardFooter>
-                  <Button className="btn-fill" color="primary" type="submit">
-                    Check-In
+                  <Button name="checkin" className="btn-fill" color="primary" disabled={this.state.disabled} type="submit">
+                    {this.state.completeMessage || 'Check In'}
                   </Button>
                 </CardFooter>
+                </Form>
               </Card>
             </Col>
 
             <Col md="12">
               <Card className="card-user">
-              <CardText>
-              <iframe title="Anonymous evaluation" src="https://docs.google.com/forms/d/e/1FAIpQLSdXV-PrmBnVumIFYUrAM8PxYDaFu0jLNF1IlMWO5Q3V_-edow/viewform?embedded=true" width="100%" height="600em" frameBorder="0" marginHeight="0" marginWidth="0">Loading…</iframe>
-              </CardText>
+                <CardHeader>
+                  <h5 className="title">Let us know how it went! Your name won't appear in the evaluation!</h5>
+                </CardHeader>
+                <CardText>
+                <iframe title="Anonymous evaluation" src="https://docs.google.com/forms/d/e/1FAIpQLSdXV-PrmBnVumIFYUrAM8PxYDaFu0jLNF1IlMWO5Q3V_-edow/viewform?embedded=true" width="100%" height="600em" frameBorder="0" marginHeight="0" marginWidth="0">Loading…</iframe>
+                </CardText>
               </Card>
             </Col>
             
