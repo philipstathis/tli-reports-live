@@ -3,24 +3,30 @@ import './App.css';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import 'ag-grid-enterprise';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       columnDefs: [{
-        headerName: "Toastmasters Division", field: "division", sortable: true, filter: true, resizable: true
+        headerName: "Toastmasters Division", enableRowGroup: true, field: "division", sortable: true, filter: true, resizable: true
       },{
-        headerName: "Toastmasters Area", field: "area", sortable: true, filter: true, resizable: true
+        headerName: "Toastmasters Area", enableRowGroup: true, field: "area", sortable: true, filter: true, resizable: true
       },{
         headerName: "Toastmasters Club Name", field: "clubName", sortable: true, filter: true, resizable: true
       },{
-        headerName: "Officer Role Selected", field: "role", sortable: true, filter: true, resizable: true
+        headerName: "Officer Role Selected", enableRowGroup: true, field: "role", sortable: true, filter: true, resizable: true
       },{
         headerName: "First Name", field: "first_name", sortable: true, filter: true, resizable: true
       },{
-        headerName: "Attended", field: "checked_in"
+        headerName: "Attended", enableRowGroup: true, field: "checked_in"
       }],
+      statusBar: {
+        statusPanels: [
+            { statusPanel: 'agTotalAndFilteredRowCountComponent', align: 'left' }
+        ]
+      }
     }
   }
 
@@ -59,7 +65,9 @@ class App extends Component {
       >
         <AgGridReact
           columnDefs={this.state.columnDefs}
-          rowData={this.state.rowData}>
+          rowData={this.state.rowData}
+          statusBar={this.state.statusBar}
+          rowGroupPanelShow='always'>
         </AgGridReact>
       </div>
     );
