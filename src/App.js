@@ -10,11 +10,11 @@ class App extends Component {
     super(props);
     this.state = {
       columnDefs: [{
-        headerName: "Toastmasters Division", enableRowGroup: true, field: "division", sortable: true, filter: true, resizable: true
+        headerName: "Toastmasters Division", enableRowGroup: true, field: "division", sortable: true, sort: 'asc', filter: true, resizable: true
       },{
-        headerName: "Toastmasters Area", enableRowGroup: true, field: "area", sortable: true, filter: true, resizable: true
+        headerName: "Toastmasters Area", enableRowGroup: true, field: "area", sortable: true, sort: 'asc', filter: true, resizable: true
       },{
-        headerName: "Toastmasters Club Name", field: "clubName", sortable: true, filter: true, resizable: true
+        headerName: "Toastmasters Club Name", field: "clubName", sortable: true, sort: 'asc', filter: true, resizable: true
       },{
         headerName: "Officer Role Selected", enableRowGroup: true, field: "role", sortable: true, filter: true, resizable: true
       },{
