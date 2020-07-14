@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "235b3d154448b818ff073607df41f30e",
+    "revision": "af62233d0a0190e418b21779daf0350c",
     "url": "/tli-reports-live/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/tli-reports-live/static/css/2.daf4b330.chunk.css"
   },
   {
-    "revision": "9d9d72501fc3bda0428c",
-    "url": "/tli-reports-live/static/css/main.6dc73a9e.chunk.css"
+    "revision": "d361fad5998b280d524d",
+    "url": "/tli-reports-live/static/css/main.3738a21c.chunk.css"
   },
   {
     "revision": "df3c7b8f6b5a4aa1b7bf",
@@ -20,7 +20,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/tli-reports-live/static/js/2.7cc8cc0f.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "9d9d72501fc3bda0428c",
+    "revision": "d361fad5998b280d524d",
     "url": "/tli-reports-live/static/js/main.7fbfba39.chunk.js"
   },
   {
