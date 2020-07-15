@@ -18,6 +18,11 @@ class App extends Component {
       },{
         headerName: "Officer Role Selected", enableRowGroup: true, field: "role", sortable: true, filter: true, resizable: true
       },{
+        headerName: "Training Date", enableRowGroup: true, field: "startTime", 
+        cellRenderer: (data) => {
+          return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+        }, sortable: true, filter: true, resizable: true
+      },{
         headerName: "First Name", field: "first_name", sortable: true, filter: true, resizable: true
       },{
         headerName: "Attended", enableRowGroup: true, field: "checked_in"
