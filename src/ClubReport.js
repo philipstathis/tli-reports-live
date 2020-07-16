@@ -40,7 +40,18 @@ class ClubReport extends Component {
         sortable: true,
         filter: true,
         resizable: true
-      }
+      },
+      autoGroupColumnDef: {
+        headerName: 'Division',
+        field: 'division',
+        minWidth: 250,
+        cellRenderer: 'agGroupCellRenderer',
+        cellRendererParams: {
+          footerValueGetter: '"Total (" + x + ")"',
+        },
+      },
+      groupIncludeFooter: true,
+      sideBar: true,
     }
   }
 
@@ -104,6 +115,7 @@ class ClubReport extends Component {
         <AgGridReact
           columnDefs={this.state.columnDefs}
           defaultColDef={this.state.defaultColDef}
+          autoGroupColumnDef={this.state.autoGroupColumnDef}
           rowData={this.state.rowData}
           statusBar={this.state.statusBar}
           rowGroupPanelShow='always'>
