@@ -24,6 +24,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import App from "App.js";
+import ClubReport from "ClubReport.js";
 import UserProfile from "views/UserProfile.js";
 
 import routes from "routes.js";
@@ -124,12 +125,15 @@ class Admin extends React.Component {
           >
             <Switch>
               {this.props.location.search.indexOf("club-report") === -1 ? null : (
-                <Route path="/tli-reports-live" search="?club-report" ><App/></Route>
+                <Route path="/tli-reports-live" search="?club-report" ><ClubReport/></Route>
+              )}
+              {this.props.location.search.indexOf("attendee-report") === -1 ? null : (
+                <Route path="/tli-reports-live" search="?attendee-report" ><App/></Route>
               )}
               {this.props.location.search.indexOf("attendee-check-in") === -1 ? null : (
                 <Route path="/tli-reports-live" search="?attendee-check-in" ><UserProfile/></Route>
               )}
-              <Route path="/tli-reports-live" search=""><App></App></Route>
+              <Route path="/tli-reports-live" search=""><ClubReport/></Route>
               <Redirect from="*" to="/tli-reports-live?club-report"/>
             </Switch>
             {// we don't want the Footer to be rendered on map page

@@ -16,12 +16,20 @@
 
 */
 import App from "App.js";
+import ClubReport from "ClubReport.js";
 import UserProfile from "views/UserProfile.js";
 
 var routes = [
   {
     path: "?club-report",
     name: "Club Registration Report",
+    icon: "tim-icons icon-chart-pie-36",
+    component: ClubReport,
+    layout: "/tli-reports-live"
+  },
+  {
+    path: "?attendee-report",
+    name: "Attendee Report",
     icon: "tim-icons icon-chart-pie-36",
     component: App,
     layout: "/tli-reports-live"
