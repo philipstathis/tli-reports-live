@@ -16,6 +16,8 @@ class ClubReport extends Component {
       },{
         headerName: "Toastmasters Club Name", field: "clubName", sortable: true, sort: 'asc'
       },{
+        headerName: "Signed Up", field: "signups"
+      },{
         headerName: "President", field: "President"
       },{
         headerName: "Vice President of Education", field: "Vice President of Education"
@@ -41,15 +43,6 @@ class ClubReport extends Component {
         filter: true,
         resizable: true
       },
-      autoGroupColumnDef: {
-        headerName: 'Division',
-        field: 'division',
-        minWidth: 250,
-        cellRenderer: 'agGroupCellRenderer',
-        cellRendererParams: {
-          footerValueGetter: '"Total (" + x + ")"',
-        },
-      },
       groupIncludeFooter: true,
       sideBar: true,
     }
@@ -72,10 +65,11 @@ class ClubReport extends Component {
         return Array.prototype.concat(answerObjects, response);
       }, [])
     ).then(data => {
-        var dataByOfficer = data.reduce(function(dataByOfficer, singleRow){
+        var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46").reduce(
+          function(dataByOfficer, singleRow){
             const value = singleRow["first_name"];
             const role = singleRow["role"]
-            const group = singleRow["clubName"] + '-' + role;
+            const group = singleRow["clubName"];
 
             if (!dataByOfficer[group]){
                 dataByOfficer[group] = {
@@ -83,11 +77,29 @@ class ClubReport extends Component {
                     "area" : singleRow["area"],
                     "clubName" : singleRow["clubName"]
                 };
+            }
+            if (!dataByOfficer[group][role]){
                 dataByOfficer[group][role] = value;
             }
             else {
-                dataByOfficer[group][role] = dataByOfficer[group][role] + ',' + value;
+                if (dataByOfficer[group][role] !== value){
+                  dataByOfficer[group][role] = dataByOfficer[group][role] + ',' + value;
+                }
             }
+
+            function calculateSignups(record) {
+              let output = 0;
+              if (record["President"]) { output++;}
+              if (record["Vice President of Education"]) { output++;}
+              if (record["Secretary"]) { output++;}
+              if (record["Vice President of Membership"]) { output++;}
+              if (record["Vice President of PR"]) { output++;}
+              if (record["Treasurer"]) { output++;}
+              if (record["Sergeant at Arms"]) { output++;}
+              return output;
+            }
+
+            dataByOfficer[group]["signups"] = calculateSignups(dataByOfficer[group]) + '/7'
             return dataByOfficer;
           }, {});
         
