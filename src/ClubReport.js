@@ -10,13 +10,24 @@ class ClubReport extends Component {
     super(props);
     this.state = {
       columnDefs: [{
-        headerName: "Toastmasters Division", field: "division", sort: 'asc', chartDataType: 'category', 
+        headerName: "Toastmasters Division", field: "division", sort: 'asc', chartDataType: 'category', rowGroup: true, hide: true
       },{
-        headerName: "Toastmasters Area", field: "area",  sort: 'asc', chartDataType: 'category'
+        headerName: 'Registration (%)',
+        colId: 'registration-percent',
+        chartDataType: 'series',
+        valueGetter: function(params) {
+          return (params.getValue("signupcount") / params.getValue("signuptotal")) * 100;
+        },
+      },{
+        headerName: "Signed Up Count", field: "signupcount", chartDataType: 'series', aggFunc: 'sum'
+      },{
+        headerName: "Total Officer Entries", field: "signuptotal", chartDataType: 'series', aggFunc: 'sum'
+      },{
+        headerName: "Toastmasters Area", field: "area",  sort: 'asc', chartDataType: 'category', rowGroup: true, hide: true
       },{
         headerName: "Toastmasters Club Name", field: "clubName", sortable: true, sort: 'asc'
       },{
-        headerName: "Signed Up", field: "signups", chartDataType: 'series'
+        headerName: "Signed Up", field: "signups", hide: true
       },{
         headerName: "President", field: "President"
       },{
@@ -42,15 +53,127 @@ class ClubReport extends Component {
         sortable: true,
         filter: true,
         resizable: true,
-        flex: 1,
-        minWidth: 100,
-        minHeight: 100,
-        enableRangeSelection: true,
-        enableCharts: true
       },
+      autoGroupColumnDef: {
+        cellRendererParams: {
+          suppressCount: true,
+        },
+      },
+      groupMultiAutoColumn: true,
+      popupParent: document.body,
       groupIncludeFooter: true,
-      sideBar: true,
+      sideBar: false,
+      enableRangeSelection: true,
+      enableCharts: true,
+      onGridReady: this.onFirstDataRendered,
+      processChartOptions: this.processChartOptions,
     }
+  }
+
+  processChartOptions(params) {
+    var options = params.options;
+  
+    // console.log('chart options:', options);
+  
+    // we are only interested in processing bar type.
+    // so if user changes the type using the chart control,
+    // we ignore it.
+    if (
+      [
+        'stackedBar',
+        'groupedBar',
+        'normalizedBar',
+        'stackedColumn',
+        'groupedColumn',
+        'normalizedColumn',
+      ].indexOf(params.type) < 0
+    ) {
+      console.log('chart type is ' + params.type + ', making no changes.');
+      return options;
+    }
+  
+    options.seriesDefaults.fill.colors = ['#e1ba00', 'silver', 'peru'];
+    options.seriesDefaults.fill.opacity = 0.8;
+  
+    options.seriesDefaults.stroke.colors = ['black', '#ff0000'];
+    options.seriesDefaults.stroke.opacity = 0.8;
+    options.seriesDefaults.stroke.width = 2;
+  
+    options.seriesDefaults.shadow.enabled = true;
+    options.seriesDefaults.shadow.color = 'rgba(0, 0, 0, 0.3)';
+    options.seriesDefaults.shadow.xOffset = 10;
+    options.seriesDefaults.shadow.yOffset = 5;
+    options.seriesDefaults.shadow.blur = 8;
+  
+    options.seriesDefaults.label.enabled = true;
+    options.seriesDefaults.label.fontStyle = 'italic';
+    options.seriesDefaults.label.fontWeight = 'bold';
+    options.seriesDefaults.label.fontSize = 15;
+    options.seriesDefaults.label.fontFamily = 'Arial, sans-serif';
+    options.seriesDefaults.label.color = 'green';
+    options.seriesDefaults.label.formatter = function(params) {
+      return '<' + params.value + '>';
+    };
+  
+    options.seriesDefaults.highlightStyle.fill = 'red';
+    options.seriesDefaults.highlightStyle.stroke = 'yellow';
+  
+    options.seriesDefaults.tooltip.renderer = function(params) {
+      var x = params.datum[params.xKey];
+      var y = params.datum[params.yKey];
+      return (
+        '<u style="color: ' +
+        params.color +
+        '">' +
+        (params.title || params.yName) +
+        '</u><br><br><b>' +
+        params.xName.toUpperCase() +
+        ':</b> ' +
+        x +
+        '<br/><b>' +
+        params.yName.toUpperCase() +
+        ':</b> ' +
+        y
+      );
+    };
+  
+    return options;
+  }
+  
+  onFirstDataRendered(params) {
+    var defaultSortModel = [
+      { colId: 'ag-Grid-AutoColumn-division', sort: 'asc' }
+    ];
+    params.api.setSortModel(defaultSortModel);
+
+    var cellRange = {
+      rowStartIndex: 0,
+      rowEndIndex: 4,
+      columns: ['ag-Grid-AutoColumn-division', 'registration-percent'],
+    };
+  
+    var createRangeChartParams = {
+      cellRange: cellRange,
+      chartType: 'pie',
+      chartPalette: 'bright',
+      processChartOptions: function(params) {
+        var opts = params.options;
+        
+        console.log(opts);
+        opts.title.enabled = true;
+        opts.title.text = 'Registrations By Division';
+
+        opts.seriesDefaults.label.enabled = true;
+  
+        if (opts.xAxis) {
+          opts.xAxis.label.rotation = 30;
+        }
+  
+        return opts;
+      },
+    };
+  
+    params.api.createRangeChart(createRangeChartParams);
   }
 
   componentDidMount() {
@@ -80,7 +203,8 @@ class ClubReport extends Component {
                 dataByOfficer[group] = {
                     "division" : singleRow["division"],
                     "area" : singleRow["area"],
-                    "clubName" : singleRow["clubName"]
+                    "clubName" : singleRow["clubName"],
+                    "signuptotal" : 7
                 };
             }
             if (!dataByOfficer[group][role]){
@@ -116,12 +240,14 @@ class ClubReport extends Component {
               "division" : club["division"],
               "area" : club["area"],
               "clubName" : club["clubName"],
-              "signups" : "0/7"
+              "signups" : "0/7",
+              "signuptotal" : 7
           };
           }
         });
 
         return Object.keys(dataByOfficer).map(function(group){
+            dataByOfficer[group]["signupcount"] = dataByOfficer[group]["signups"].split('/').reduce((p, c) => parseInt(p));
             return dataByOfficer[group];
         });
     })
@@ -133,10 +259,7 @@ class ClubReport extends Component {
   }
 
   getHeight(){
-    if (window.innerHeight < 10){
-      return "100em";
-    }
-    return "100%";
+    return window.innerHeight + "px";
   }
 
   getStaticClubData(){
@@ -283,9 +406,17 @@ class ClubReport extends Component {
         <AgGridReact
           columnDefs={this.state.columnDefs}
           defaultColDef={this.state.defaultColDef}
+          groupIncludeFooter={this.state.groupIncludeFooter}
+          sideBar={this.state.sideBar}
+          pivotMode={this.state.pivotMode}
           autoGroupColumnDef={this.state.autoGroupColumnDef}
           rowData={this.state.rowData}
           statusBar={this.state.statusBar}
+          popupParent={this.state.popupParent}
+          enableRangeSelection={this.state.enableRangeSelection}
+          enableCharts={this.state.enableCharts}
+          groupMultiAutoColumn={this.state.groupMultiAutoColumn}
+          onGridReady={this.state.onGridReady}
           rowGroupPanelShow='always'>
         </AgGridReact>
       </div>
