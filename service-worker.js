@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/tli-reports-live/precache-manifest.9c0cc3063891bc7479a0ab54b61f01e5.js"
+  "/tli-reports-live/precache-manifest.68043e8d34d7089522b1f7a3850ff5ce.js"
 );
 
 self.addEventListener('message', (event) => {
