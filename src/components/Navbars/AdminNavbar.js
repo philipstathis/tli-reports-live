@@ -21,10 +21,8 @@ import classNames from "classnames";
 
 // reactstrap components
 import {
-  Collapse,
   NavbarBrand,
   Navbar,
-  Nav,
   Container} from "reactstrap";
 
 class AdminNavbar extends React.Component {
@@ -103,25 +101,6 @@ class AdminNavbar extends React.Component {
                 {this.props.brandText}
               </NavbarBrand>
             </div>
-            <button
-              aria-expanded={false}
-              aria-label="Toggle navigation"
-              className="navbar-toggler"
-              data-target="#navigation"
-              data-toggle="collapse"
-              id="navigation"
-              type="button"
-              onClick={this.toggleCollapse}
-            >
-              <span className="navbar-toggler-bar navbar-kebab" />
-              <span className="navbar-toggler-bar navbar-kebab" />
-              <span className="navbar-toggler-bar navbar-kebab" />
-            </button>
-            <Collapse navbar isOpen={this.state.collapseOpen}>
-              <Nav className="ml-auto" navbar>
-                <li className="separator d-lg-none" />
-              </Nav>
-            </Collapse>
           </Container>
         </Navbar>
       </>

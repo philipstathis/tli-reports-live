@@ -10,13 +10,13 @@ class ClubReport extends Component {
     super(props);
     this.state = {
       columnDefs: [{
-        headerName: "Toastmasters Division", field: "division", sort: 'asc', 
+        headerName: "Toastmasters Division", field: "division", sort: 'asc', chartDataType: 'category', 
       },{
-        headerName: "Toastmasters Area", field: "area",  sort: 'asc'
+        headerName: "Toastmasters Area", field: "area",  sort: 'asc', chartDataType: 'category'
       },{
         headerName: "Toastmasters Club Name", field: "clubName", sortable: true, sort: 'asc'
       },{
-        headerName: "Signed Up", field: "signups"
+        headerName: "Signed Up", field: "signups", chartDataType: 'series'
       },{
         headerName: "President", field: "President"
       },{
@@ -41,7 +41,12 @@ class ClubReport extends Component {
         enableRowGroup: true,
         sortable: true,
         filter: true,
-        resizable: true
+        resizable: true,
+        flex: 1,
+        minWidth: 100,
+        minHeight: 100,
+        enableRangeSelection: true,
+        enableCharts: true
       },
       groupIncludeFooter: true,
       sideBar: true,
@@ -106,8 +111,6 @@ class ClubReport extends Component {
         const allClubs = this.getStaticClubData();
         allClubs.forEach(club => {
           const group = club["clubName"];
-          console.log(group);
-          console.log(club);
           if (!(group in dataByOfficer)){
             dataByOfficer[group] = {
               "division" : club["division"],
@@ -127,6 +130,13 @@ class ClubReport extends Component {
       // if there's an error, log it
       console.log(error);
     })
+  }
+
+  getHeight(){
+    if (window.innerHeight < 10){
+      return "100em";
+    }
+    return "100%";
   }
 
   getStaticClubData(){
@@ -265,7 +275,7 @@ class ClubReport extends Component {
       <div
         className="content ag-theme-alpine"
         style={{
-        height: '100%',
+        height: this.getHeight(),
         width: '100%' 
       }
       }
