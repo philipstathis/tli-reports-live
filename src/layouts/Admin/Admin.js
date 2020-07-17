@@ -21,7 +21,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import PerfectScrollbar from "perfect-scrollbar";
 
 // core components
-import Footer from "components/Footer/Footer.js";
+import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import App from "App.js";
 import ClubReport from "ClubReport.js";
@@ -79,13 +79,18 @@ class Admin extends React.Component {
     this.setState({ sidebarOpened: !this.state.sidebarOpened });
   };
   getRoutes = routes => {
-    return routes.map((prop, key) => {return (
+    return routes.map((prop, key) => {
+      if (prop.layout === "/tli-reports-live") {
+        return (
           <Route
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
           />
         );
+      } else {
+        return null;
+      }
     });
   };
   handleBgClick = color => {
@@ -101,7 +106,7 @@ class Admin extends React.Component {
         return routes[i].name;
       }
     }
-    return "Brand";
+    return "District 46 - TLI Custom Reports";
   };
   render() {
     return (
@@ -113,7 +118,7 @@ class Admin extends React.Component {
             bgColor={this.state.backgroundColor}
             logo={{
               outterLink: "https://toastmasters46.org",
-              text: "TLI DISTRICT 46",
+              text: "TM46 Official Site",
               imgSrc: logo
             }}
             toggleSidebar={this.toggleSidebar}
@@ -123,6 +128,12 @@ class Admin extends React.Component {
             ref="mainPanel"
             data={this.state.backgroundColor}
           >
+            <AdminNavbar
+              {...this.props}
+              brandText={this.getBrandText(this.props.location.pathname)}
+              toggleSidebar={this.toggleSidebar}
+              sidebarOpened={this.state.sidebarOpened}
+            />
             <Switch>
               {this.props.location.search.indexOf("club-report") === -1 ? null : (
                 <Route path="/tli-reports-live" search="?club-report" ><ClubReport/></Route>
@@ -136,10 +147,6 @@ class Admin extends React.Component {
               <Route path="/tli-reports-live" search=""><ClubReport/></Route>
               <Redirect from="*" to="/tli-reports-live?club-report"/>
             </Switch>
-            {// we don't want the Footer to be rendered on map page
-            this.props.location.pathname.indexOf("maps") !== -1 ? null : (
-              <Footer fluid />
-            )}
           </div>
         </div>
       </>
