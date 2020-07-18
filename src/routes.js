@@ -22,8 +22,22 @@ import UserProfile from "views/UserProfile.js";
 var routes = [
   {
     path: "?club-report",
-    name: "Club Registration Report",
+    name: "Registration By Division",
     icon: "tim-icons icon-chart-pie-36",
+    component: ClubReport,
+    layout: "/tli-reports-live"
+  },
+  {
+    path: "?club-report",
+    name: "Registration By Area",
+    icon: "tim-icons icon-chart-pie-36",
+    component: ClubReport,
+    layout: "/tli-reports-live"
+  },
+  {
+    path: "?club-report",
+    name: "Training Materials",
+    icon: "tim-icons icon-single-copy-04",
     component: ClubReport,
     layout: "/tli-reports-live"
   },
@@ -36,7 +50,7 @@ var routes = [
   },
   {
     path: "?attendee-check-in",
-    name: "Check-In",
+    name: "Event Check-In",
     icon: "tim-icons icon-single-02",
     component: UserProfile,
     layout: "/tli-reports-live"

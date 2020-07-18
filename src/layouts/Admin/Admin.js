@@ -22,13 +22,12 @@ import PerfectScrollbar from "perfect-scrollbar";
 
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import Sidebar from "components/Sidebar/Sidebar.js";
 import App from "App.js";
 import ClubReport from "ClubReport.js";
 import UserProfile from "views/UserProfile.js";
-
+import WipView from "views/WipView.js";
+import Sidebar from "components/Sidebar/Sidebar.js";
 import routes from "routes.js";
-
 import logo from "assets/img/react-logo.png";
 
 var ps;
@@ -118,12 +117,11 @@ class Admin extends React.Component {
             bgColor={this.state.backgroundColor}
             logo={{
               outterLink: "https://toastmasters46.org",
-              text: "TM46 Official Site",
+              text: "Detailed Reports",
               imgSrc: logo
             }}
             toggleSidebar={this.toggleSidebar}
-          />
-          <div
+          />          <div
             className="main-panel"
             ref="mainPanel"
             data={this.state.backgroundColor}
@@ -144,7 +142,7 @@ class Admin extends React.Component {
               {this.props.location.search.indexOf("attendee-check-in") === -1 ? null : (
                 <Route path="/tli-reports-live" search="?attendee-check-in" ><UserProfile/></Route>
               )}
-              <Route path="/tli-reports-live" search=""><ClubReport/></Route>
+              <Route path="/tli-reports-live" search=""><WipView/></Route>
               <Redirect from="*" to="/tli-reports-live?club-report"/>
             </Switch>
           </div>
