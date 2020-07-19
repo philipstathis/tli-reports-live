@@ -427,6 +427,7 @@ class HomeReport extends Component {
                             onGridReady={this.onFirstDataRendered.bind(this)}
                         />
                     </div>
+                <h3> For detailed reporting and source please click <a href="philipstathis.github.io/tli-reports-live">here</a></h3>
             </div>
         );
     }

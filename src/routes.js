@@ -18,6 +18,7 @@
 import ClubReport from "ClubReport.js";
 import DivisionReport from "views/DivisionReport.js";
 import UserProfile from "views/UserProfile.js";
+import WipView from "views/WipView";
 
 var routes = [
   {
@@ -35,10 +36,10 @@ var routes = [
     layout: "/tli-reports-live"
   },
   {
-    path: "?club-report",
+    path: "?wip",
     name: "Training Materials",
     icon: "tim-icons icon-single-copy-04",
-    component: ClubReport,
+    component: WipView,
     layout: "/tli-reports-live"
   },
   {

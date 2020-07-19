@@ -31,6 +31,7 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import routes from "routes.js";
 import logo from "assets/img/react-logo.png";
 import DivisionReport from "views/DivisionReport";
+import WipView from "views/WipView";
 
 var ps;
 
@@ -148,6 +149,9 @@ class Admin extends React.Component {
               )}
               {this.props.location.search.indexOf("embed") === -1 ? null : (
                 <Route path="/tli-reports-live" search="?embed" ><HomeReport/></Route>
+              )}
+              {this.props.location.search.indexOf("wip") === -1 ? null : (
+                <Route path="/tli-reports-live" search="?wip" ><WipView/></Route>
               )}
               <Route path="/tli-reports-live" search=""><DivisionReport/></Route>
               <Redirect from="*" to="/tli-reports-live"/>
