@@ -16,18 +16,18 @@ class ClubReport extends Component {
         colId: 'registration-percent',
         chartDataType: 'series',
         valueGetter: function(params) {
-          return (params.getValue("signupcount") / params.getValue("signuptotal")) * 100;
+          return Math.round((params.getValue("signupcount") / params.getValue("signuptotal")) * 100);
         },
       },{
-        headerName: "Signed Up Count", field: "signupcount", chartDataType: 'series', aggFunc: 'sum'
+        headerName: "Registered", field: "signupcount", chartDataType: 'series', aggFunc: 'sum', hide:true
       },{
-        headerName: "Total Officer Entries", field: "signuptotal", chartDataType: 'series', aggFunc: 'sum'
+        headerName: "Total", field: "signuptotal", chartDataType: 'series', aggFunc: 'sum', hide:true
       },{
         headerName: "Toastmasters Area", field: "area",  sort: 'asc', chartDataType: 'category', rowGroup: true, hide: true
       },{
         headerName: "Toastmasters Club Name", field: "clubName", sortable: true, sort: 'asc'
       },{
-        headerName: "Signed Up", field: "signups", hide: true
+        headerName: "Signed Up", field: "signups"
       },{
         headerName: "President", field: "President"
       },{
@@ -145,35 +145,6 @@ class ClubReport extends Component {
       { colId: 'ag-Grid-AutoColumn-division', sort: 'asc' }
     ];
     params.api.setSortModel(defaultSortModel);
-
-    var cellRange = {
-      rowStartIndex: 0,
-      rowEndIndex: 4,
-      columns: ['ag-Grid-AutoColumn-division', 'registration-percent'],
-    };
-  
-    var createRangeChartParams = {
-      cellRange: cellRange,
-      chartType: 'pie',
-      chartPalette: 'bright',
-      processChartOptions: function(params) {
-        var opts = params.options;
-        
-        console.log(opts);
-        opts.title.enabled = true;
-        opts.title.text = 'Registrations By Division';
-
-        opts.seriesDefaults.label.enabled = true;
-  
-        if (opts.xAxis) {
-          opts.xAxis.label.rotation = 30;
-        }
-  
-        return opts;
-      },
-    };
-  
-    params.api.createRangeChart(createRangeChartParams);
   }
 
   componentDidMount() {

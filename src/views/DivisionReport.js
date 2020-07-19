@@ -3,10 +3,8 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-enterprise';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import '../assets/css/HomeReport.css';
-import DivisionReport from 'views/DivisionReport.js';
 
-class HomeReport extends Component {
+class DivisionReport extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -16,21 +14,51 @@ class HomeReport extends Component {
                 sort: 'asc',
                 chartDataType: 'category'
             }, {
+                headerName: "All 7 Officers",
+                field: "allseven",
+                chartDataType: 'series'
+            }, {
+                headerName: "Four or More",
+                field: "fourormore",
+                chartDataType: 'series'
+            }, {
+                headerName: "Clubs with at least One",
+                field: "atleastone",
+                chartDataType: 'series'
+            },{
+                headerName: 'Four or More Over Total Clubs (%)',
+                colId: 'registration-percent',
+                chartDataType: 'series',
+                valueGetter: function(params) {
+                  return Math.round((params.getValue("fourormore") * 7 / params.getValue("signuptotal")) * 100);
+                },
+            },{
+                headerName: 'Clubs with at least One Over Total Clubs (%)',
+                colId: 'registration-percent',
+                chartDataType: 'series',
+                valueGetter: function(params) {
+                  return Math.round((params.getValue("atleastone") * 7 / params.getValue("signuptotal")) * 100);
+                },
+            }, {
                 headerName: "Training Verified",
                 field: "verified",
-                chartDataType: 'series'
+                chartDataType: 'series',
+                hide:true
             }, {
                 headerName: "Registered But Not Confirmed",
                 field: "registered",
-                chartDataType: 'series'
+                chartDataType: 'series',
+                hide:true
             }, {
                 headerName: "Not Registered",
                 field: "missing",
-                chartDataType: 'series'
+                chartDataType: 'series',
+                hide:true
             }, {
                 headerName: "Total",
                 field: "signuptotal",
-                chartDataType: 'series'
+                chartDataType: 'series',
+                hide:true
             }
             ],
             defaultColDef: {
@@ -39,79 +67,8 @@ class HomeReport extends Component {
                 resizable: true,
             },
             popupParent: document.body,
-            processChartOptions: this.processChartOptions,
             onGridReady: this.onFirstDataRendered,
         };
-    }
-
-    processChartOptions(params) {
-        var options = params.options;
-
-        // console.log('chart options:', options);
-
-        // we are only interested in processing bar type.
-        // so if user changes the type using the chart control,
-        // we ignore it.
-        if (
-            [
-                'stackedBar',
-                'groupedBar',
-                'normalizedBar',
-                'stackedColumn',
-                'groupedColumn',
-                'normalizedColumn',
-            ].indexOf(params.type) < 0
-        ) {
-            console.log('chart type is ' + params.type + ', making no changes.');
-            return options;
-        }
-
-        options.seriesDefaults.fill.colors = ['#e1ba00', 'silver', 'peru'];
-        options.seriesDefaults.fill.opacity = 0.8;
-
-        options.seriesDefaults.stroke.colors = ['black', '#ff0000'];
-        options.seriesDefaults.stroke.opacity = 0.8;
-        options.seriesDefaults.stroke.width = 2;
-
-        options.seriesDefaults.shadow.enabled = true;
-        options.seriesDefaults.shadow.color = 'rgba(0, 0, 0, 0.3)';
-        options.seriesDefaults.shadow.xOffset = 10;
-        options.seriesDefaults.shadow.yOffset = 5;
-        options.seriesDefaults.shadow.blur = 8;
-
-        options.seriesDefaults.label.enabled = true;
-        options.seriesDefaults.label.fontStyle = 'italic';
-        options.seriesDefaults.label.fontWeight = 'bold';
-        options.seriesDefaults.label.fontSize = 15;
-        options.seriesDefaults.label.fontFamily = 'Arial, sans-serif';
-        options.seriesDefaults.label.color = 'green';
-        options.seriesDefaults.label.formatter = function (params) {
-            return '<' + params.value + '>';
-        };
-
-        options.seriesDefaults.highlightStyle.fill = 'red';
-        options.seriesDefaults.highlightStyle.stroke = 'yellow';
-
-        options.seriesDefaults.tooltip.renderer = function (params) {
-            var x = params.datum[params.xKey];
-            var y = params.datum[params.yKey];
-            return (
-                '<u style="color: ' +
-                params.color +
-                '">' +
-                (params.title || params.yName) +
-                '</u><br><br><b>' +
-                params.xName.toUpperCase() +
-                ':</b> ' +
-                x +
-                '<br/><b>' +
-                params.yName.toUpperCase() +
-                ':</b> ' +
-                y
-            );
-        };
-
-        return options;
     }
 
     onFirstDataRendered(params) {
@@ -119,35 +76,8 @@ class HomeReport extends Component {
             { colId: 'division', sort: 'asc' }
         ];
         params.api.setSortModel(defaultSortModel);
-        params.api.sizeColumnsToFit()
-        var cellRange = {
-            rowStartIndex: 0,
-            rowEndIndex: 4,
-            columns: ['division', 'registered', 'missing', 'verified'],
-        };
-
-        var createRangeChartParams = {
-            cellRange: cellRange,
-            chartType: 'normalizedColumn',
-            chartPalette: 'flat',
-            suppressChartRanges: true,
-            chartContainer: document.querySelector('#myChart'),
-            processChartOptions: function (params) {
-                var opts = params.options;
-                opts.title.enabled = true;
-                opts.title.text = 'Registrations By Division';
-
-                opts.seriesDefaults.label.enabled = true;
-
-                if (opts.xAxis) {
-                    opts.xAxis.label.rotation = 0;
-                }
-
-                return opts;
-            },
-        };
-
-        params.api.createRangeChart(createRangeChartParams);
+        
+        params.api.sizeColumnsToFit();
     }
 
     componentDidMount() {
@@ -210,6 +140,9 @@ class HomeReport extends Component {
                         dataByOfficer[group]["registered"] = calculateSignups(dataByOfficer[group]);
                     }
                     dataByOfficer[group]["missing"] = dataByOfficer[group]["signuptotal"] - (dataByOfficer[group]["registered"] || 0) - (dataByOfficer[group]["verified"] || 0);
+                    dataByOfficer[group]["atleastone"] = calculateSignups(dataByOfficer[group]) > 0;
+                    dataByOfficer[group]["fourormore"] = calculateSignups(dataByOfficer[group]) > 3;
+                    dataByOfficer[group]["allseven"] = calculateSignups(dataByOfficer[group]) === 7;
                     return dataByOfficer;
                 }, {});
 
@@ -224,7 +157,10 @@ class HomeReport extends Component {
                         "registered": 0,
                         "missing": 7,
                         "verified": 0,
-                        "signuptotal": 7
+                        "signuptotal": 7,
+                        "atleastone": 0,
+                        "fourormore": 0,
+                        "allseven": 0
                     };
                 }
             });
@@ -242,6 +178,11 @@ class HomeReport extends Component {
                 dataByDivision[group]["registered"] = (dataByDivision[group]["registered"] || 0) + singleRow["registered"];
                 dataByDivision[group]["missing"] = (dataByDivision[group]["missing"] || 0) + singleRow["missing"];
                 dataByDivision[group]["signuptotal"] = (dataByDivision[group]["signuptotal"] || 0) + singleRow["signuptotal"];
+                
+                dataByDivision[group]["atleastone"] = (dataByDivision[group]["atleastone"] || 0) + singleRow["atleastone"];
+                dataByDivision[group]["fourormore"] = (dataByDivision[group]["fourormore"] || 0) + singleRow["fourormore"];
+                dataByDivision[group]["allseven"] = (dataByDivision[group]["allseven"] || 0) + singleRow["allseven"];
+                
                 return dataByDivision;
             }, {});
 
@@ -401,35 +342,26 @@ class HomeReport extends Component {
 
     render() {
         return (
-            <div style={{ width: '100%', height: '100%' }}>
-                <h1> </h1>
-                <div id="myChart" className="ag-theme-alpine my-chart"></div>
-                <h1> </h1>
-                <DivisionReport/>
-                <h1> </h1>
-                    <div
-                        id="myGrid"
-                        style={{
-                            height: this.getHeight(),
-                            width: '100%',
-                        }}
-                        className="ag-theme-alpine"
-                    >
-                        <AgGridReact
-                            columnDefs={this.state.columnDefs}
-                            defaultColDef={this.state.defaultColDef}
-                            popupParent={this.state.popupParent}
-                            rowData={this.state.rowData}
-                            enableRangeSelection={true}
-                            enableCharts={true}
-                            processChartOptions={this.state.processChartOptions}
-                            createChartContainer={this.createChartContainer}
-                            onGridReady={this.onFirstDataRendered.bind(this)}
-                        />
-                    </div>
-            </div>
+          <div
+            className="content ag-theme-alpine"
+            style={{
+            height: this.getHeight(),
+            width: '100%' }}
+          >
+            <AgGridReact
+                columnDefs={this.state.columnDefs}
+                defaultColDef={this.state.defaultColDef}
+                popupParent={this.state.popupParent}
+                rowData={this.state.rowData}
+                enableRangeSelection={true}
+                enableCharts={true}
+                processChartOptions={this.state.processChartOptions}
+                createChartContainer={this.createChartContainer}
+                onGridReady={this.onFirstDataRendered.bind(this)}
+            />
+          </div>
         );
     }
 }
 var currentChartRef;
-export default HomeReport;
+export default DivisionReport;
