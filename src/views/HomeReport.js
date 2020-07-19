@@ -20,7 +20,7 @@ class HomeReport extends Component {
                 field: "verified",
                 chartDataType: 'series'
             }, {
-                headerName: "Registered But Not Confirmed",
+                headerName: "Registered But Not Trained Yet",
                 field: "registered",
                 chartDataType: 'series'
             }, {
@@ -119,7 +119,8 @@ class HomeReport extends Component {
             { colId: 'division', sort: 'asc' }
         ];
         params.api.setSortModel(defaultSortModel);
-        params.api.sizeColumnsToFit()
+        params.api.sizeColumnsToFit();
+        params.api.resetRowHeights();
         var cellRange = {
             rowStartIndex: 0,
             rowEndIndex: 4,
@@ -135,14 +136,23 @@ class HomeReport extends Component {
             processChartOptions: function (params) {
                 var opts = params.options;
                 opts.title.enabled = true;
-                opts.title.text = 'Registrations By Division';
+                opts.title.text = 'Club Officer Training Status Report by Division';
 
                 opts.seriesDefaults.label.enabled = true;
+                opts.seriesDefaults.label.formatter = function (params) {
+                    return Math.round(params.value);
+                };
 
                 if (opts.xAxis) {
                     opts.xAxis.label.rotation = 0;
+                    opts.xAxis.title.text = "Number of Officers in Bar";
+                    opts.xAxis.title.enabled = true;
                 }
-
+                if (opts.yAxis) {
+                    opts.yAxis.title.text = "% of Total";
+                    opts.yAxis.title.enabled = true;
+                }
+                console.log(opts);
                 return opts;
             },
         };
@@ -238,10 +248,10 @@ class HomeReport extends Component {
                     };
                 }
 
-                dataByDivision[group]["verified"] = (dataByDivision[group]["verified"] || 0) + singleRow["verified"];
-                dataByDivision[group]["registered"] = (dataByDivision[group]["registered"] || 0) + singleRow["registered"];
-                dataByDivision[group]["missing"] = (dataByDivision[group]["missing"] || 0) + singleRow["missing"];
-                dataByDivision[group]["signuptotal"] = (dataByDivision[group]["signuptotal"] || 0) + singleRow["signuptotal"];
+                dataByDivision[group]["verified"] = parseInt((dataByDivision[group]["verified"] || 0) + singleRow["verified"]);
+                dataByDivision[group]["registered"] = parseInt((dataByDivision[group]["registered"] || 0) + singleRow["registered"]);
+                dataByDivision[group]["missing"] = parseInt((dataByDivision[group]["missing"] || 0) + singleRow["missing"]);
+                dataByDivision[group]["signuptotal"] = parseInt((dataByDivision[group]["signuptotal"] || 0) + singleRow["signuptotal"]);
                 return dataByDivision;
             }, {});
 
@@ -404,9 +414,16 @@ class HomeReport extends Component {
             <div style={{ width: '100%', height: '100%' }}>
                 <h1> </h1>
                 <div id="myChart" className="ag-theme-alpine my-chart"></div>
-                <h1> </h1>
+                <p style={{
+                    "margin-left":"50px",
+                    "text-transform":"uppercase",
+                    "font-size":"1rem"
+                }}>
+                    Club Registration Status Report
+                </p>
                 <DivisionReport/>
                 <h1> </h1>
+                <div style={{display: "none"}}>
                     <div
                         id="myGrid"
                         style={{
@@ -427,7 +444,14 @@ class HomeReport extends Component {
                             onGridReady={this.onFirstDataRendered.bind(this)}
                         />
                     </div>
-                <h3> For detailed reporting and source please click <a href="https://philipstathis.github.io/tli-reports-live">here</a></h3>
+                </div>
+                <p style={{
+                    "margin-left":"50px",
+                    "text-transform":"uppercase",
+                    "font-size":"1rem"
+                }}>
+                    For detailed reporting and source please click <a href="https://philipstathis.github.io/tli-reports-live">here</a>
+                </p>
             </div>
         );
     }

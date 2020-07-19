@@ -26,18 +26,18 @@ class DivisionReport extends Component {
                 field: "atleastone",
                 chartDataType: 'series'
             },{
-                headerName: 'Four or More Over Total Clubs (%)',
+                headerName: 'Four or More / Total Clubs (%)',
                 colId: 'registration-percent',
                 chartDataType: 'series',
                 valueGetter: function(params) {
-                  return Math.round((params.getValue("fourormore") * 7 / params.getValue("signuptotal")) * 100);
+                  return Math.round((params.getValue("fourormore") * 7 / params.getValue("signuptotal")) * 100) + '%';
                 },
             },{
-                headerName: 'Clubs with at least One Over Total Clubs (%)',
+                headerName: 'Clubs with at least One / Total Clubs (%)',
                 colId: 'registration-percent',
                 chartDataType: 'series',
                 valueGetter: function(params) {
-                  return Math.round((params.getValue("atleastone") * 7 / params.getValue("signuptotal")) * 100);
+                  return Math.round((params.getValue("atleastone") * 7 / params.getValue("signuptotal")) * 100) + '%';
                 },
             }, {
                 headerName: "Training Verified",

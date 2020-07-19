@@ -108,7 +108,7 @@ class Admin extends React.Component {
         return routes[i].name;
       }
     }
-    return "District 46 - TLI Custom Reports";
+    return "Toastmasters District 46: TLI Club Officer Training Status Report";
   };
   render() {
     return (
