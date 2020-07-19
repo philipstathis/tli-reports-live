@@ -399,9 +399,7 @@ class ClubReport extends Component {
         className="content ag-theme-alpine"
         style={{
         height: this.getHeight(),
-        width: '100%' 
-      }
-      }
+        width: '100%' }}
       >
         <AgGridReact
           columnDefs={this.state.columnDefs}
