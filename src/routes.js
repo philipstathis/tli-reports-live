@@ -15,7 +15,6 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import App from "App.js";
 import ClubReport from "ClubReport.js";
 import UserProfile from "views/UserProfile.js";
 
@@ -39,13 +38,6 @@ var routes = [
     name: "Training Materials",
     icon: "tim-icons icon-single-copy-04",
     component: ClubReport,
-    layout: "/tli-reports-live"
-  },
-  {
-    path: "?attendee-report",
-    name: "Attendee Report",
-    icon: "tim-icons icon-chart-pie-36",
-    component: App,
     layout: "/tli-reports-live"
   },
   {
