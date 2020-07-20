@@ -262,7 +262,6 @@ class DivisionReport extends Component {
             { "division": "C", "area": "35", "clubName": "Deloitte Tri-State Toastmasters  (1244840)" },
             { "division": "C", "area": "35", "clubName": "Midtown's Best @ Morgan Stanley (1700500)" },
             { "division": "C", "area": "35", "clubName": "MS Midtown Complex (4677031)" },
-            { "division": "C", "area": "35", "clubName": "District Leaders Toastmasters (5616534)" },
             { "division": "C", "area": "35", "clubName": "The Big Toast NYC (7419138)" },
             { "division": "C", "area": "36", "clubName": "BlackRock Speaks NY (2884725)" },
             { "division": "C", "area": "36", "clubName": "The World's Leading Toastmasters (4315364)" },
