@@ -1,0 +1,11 @@
+
+.ag-header-cell-label {
+    /* Necessary to allow for text to grow vertically */
+    height: 100%;
+    padding: 0 !important;
+}
+
+.ag-header-cell-text {
+    word-break:break-all;
+    white-space:break-spaces;
+}

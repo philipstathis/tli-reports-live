@@ -142,7 +142,8 @@ class ClubReport extends Component {
   
   onFirstDataRendered(params) {
     var defaultSortModel = [
-      { colId: 'ag-Grid-AutoColumn-division', sort: 'asc' }
+      { colId: 'ag-Grid-AutoColumn-division', sort: 'asc' },
+      { colId: 'ag-Grid-AutoColumn-area', sort: 'asc' }
     ];
     params.api.setSortModel(defaultSortModel);
   }

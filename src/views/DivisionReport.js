@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-enterprise';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import '../assets/css/HomeReport.css';
 
 class DivisionReport extends Component {
     constructor(props) {
@@ -16,11 +17,13 @@ class DivisionReport extends Component {
             }, {
                 headerName: "All 7 Officers",
                 field: "allseven",
-                chartDataType: 'series'
+                chartDataType: 'series',
+                width:"100"
             }, {
                 headerName: "Four or More",
                 field: "fourormore",
-                chartDataType: 'series'
+                chartDataType: 'series',
+                width:"100"
             }, {
                 headerName: "Clubs with at least One",
                 field: "atleastone",
@@ -65,6 +68,7 @@ class DivisionReport extends Component {
                 sortable: true,
                 filter: true,
                 resizable: true,
+                width:150
             },
             popupParent: document.body,
             onGridReady: this.onFirstDataRendered,
@@ -76,7 +80,7 @@ class DivisionReport extends Component {
             { colId: 'division', sort: 'asc' }
         ];
         params.api.setSortModel(defaultSortModel);
-        
+        params.api.resetRowHeights();
         params.api.sizeColumnsToFit();
     }
 
@@ -196,7 +200,7 @@ class DivisionReport extends Component {
     }
 
     getHeight() {
-        return (window.innerHeight / 3) + "px";
+        return 265 + "px";
     }
 
     getStaticClubData() {
