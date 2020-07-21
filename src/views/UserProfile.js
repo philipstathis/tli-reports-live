@@ -16,6 +16,7 @@
 
 */
 import React from "react";
+import logo from "../assets/img/logo-main-2020.png";
 
 // reactstrap components
 import {
@@ -29,50 +30,94 @@ import {
   Form,
   Input,
   Row,
-  Col
+  Col,
+  Media
 } from "reactstrap";
 
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
-
+    this.state = {
+        errors: {}
+    }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(e) {
+    console.log(e);
     this.setState({
         [e.target.name]: e.target.value
     });
   }
 
+  handleValidation(){
+    let errors = {};
+    let formIsValid = true;
+    const attendeeEmail = this.state.attendeeEmail;
+    const eventPassword = this.state.eventPassword;
+
+    //Name
+    if(!eventPassword){
+       formIsValid = false;
+       errors["eventPassword"] = "Cannot be empty";
+    }
+
+    //Email
+    if(!attendeeEmail){
+       formIsValid = false;
+       errors["attendeeEmail"] = "Cannot be empty";
+    }
+
+    if(typeof attendeeEmail !== "undefined"){
+       let lastAtPos = attendeeEmail.lastIndexOf('@');
+       let lastDotPos = attendeeEmail.lastIndexOf('.');
+
+       if (!(lastAtPos < lastDotPos && lastAtPos > 0 && attendeeEmail.indexOf('@@') === -1 && lastDotPos > 2 && (attendeeEmail.length - lastDotPos) > 2)) {
+          formIsValid = false;
+          errors["attendeeEmail"] = "attendeeEmail is not valid";
+        }
+    }  
+
+    this.setState({errors: errors});
+    return formIsValid;
+  }
+
   handleSubmit(event) {
     event.preventDefault();
-    fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/todos', {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify( {
-          'attendeeEmail': this.state.attendeeEmail,
-          'eventPassword': this.state.eventPassword 
-        }),
-        method: 'POST'
-    }).then( response => response.json()).then(res => {
-      console.log(res);
-      if (res.id){
-        this.setState({disabled: true, completeMessage: 'Check-In Complete, Thank You!'});
-      }else {
-        alert("Message failed to send. Did you enter the Correct Access Code? E-mail district46officerstraining@gmail.com for support.");
-      }
-    }).catch(e => console.log(e));
+    if(!this.handleValidation()){
+      alert("Please fill out both the event password and your e-mail.")
+    }
+    else {
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/todos', {
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify( {
+            'attendeeEmail': this.state.attendeeEmail,
+            'eventPassword': this.state.eventPassword 
+          }),
+          method: 'POST'
+      }).then( response => response.json()).then(res => {
+        console.log(res);
+        if (res.id){
+          this.setState({disabled: true, completeMessage: 'Check-In Complete, Thank You!'});
+        }else {
+          alert("Message failed to send. Did you enter the Correct Access Code? E-mail district46officerstraining@gmail.com for support.");
+        }
+      }).catch(e => console.log(e));
+    }
   }
 
   render() {
     return (
       <>
         <div className="content">
+        <Media middle>
+          <img src={logo} alt="Toastmasters District 46" />
+        </Media>
+        <h1> </h1>
           <Row>
           <Col md="12">
               <Card>
@@ -93,6 +138,7 @@ class UserProfile extends React.Component {
                             name="eventPassword"
                             onChange={this.handleChange}
                           />
+                          <span style={{color: "red"}}>{this.state.errors["eventPassword"]}</span>
                         </FormGroup>
                       </Col>
                       <Col className="pl-md-1" md="6">
@@ -104,6 +150,7 @@ class UserProfile extends React.Component {
                                  type="email"
                                  name="attendeeEmail"
                                  onChange={this.handleChange} />
+                          <span style={{color: "red"}}>{this.state.errors["attendeeEmail"]}</span>
                         </FormGroup>
                       </Col>
                     </Row>

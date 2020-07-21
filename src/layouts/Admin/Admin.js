@@ -75,11 +75,13 @@ class Admin extends React.Component {
       this.refs.mainPanel.scrollTop = 0;
     }
   }
+
   // this function opens and closes the sidebar on small devices
   toggleSidebar = () => {
     document.documentElement.classList.toggle("nav-open");
     this.setState({ sidebarOpened: !this.state.sidebarOpened });
   };
+
   getRoutes = routes => {
     return routes.map((prop, key) => {
       if (prop.layout === "/tli-reports-live") {
@@ -95,9 +97,11 @@ class Admin extends React.Component {
       }
     });
   };
+
   handleBgClick = color => {
     this.setState({ backgroundColor: color });
   };
+
   getBrandText = path => {
     for (let i = 0; i < routes.length; i++) {
       if (
@@ -110,9 +114,16 @@ class Admin extends React.Component {
     }
     return "Toastmasters District 46: TLI Club Officer Training Status Report";
   };
+
   render() {
     return (
       <>
+        {this.props.location.search.indexOf("attendee-check-in") === 1 ? 
+          <div
+            ref="mainPanel"
+            data={this.state.backgroundColor}
+          ><Route path="/tli-reports-live" search="?attendee-check-in" ><UserProfile/></Route> 
+          </div>: (
         <div className="wrapper">
             {this.props.location.search.indexOf("?embed") > -1 ? null : (
                <Sidebar
@@ -157,7 +168,7 @@ class Admin extends React.Component {
               <Redirect from="*" to="/tli-reports-live"/>
             </Switch>
           </div>
-        </div>
+        </div>)}
       </>
     );
   }
