@@ -18,12 +18,12 @@ class DivisionReport extends Component {
                 headerName: "All 7 Officers",
                 field: "allseven",
                 chartDataType: 'series',
-                width:"100"
+                width:100
             }, {
                 headerName: "Four or More",
                 field: "fourormore",
                 chartDataType: 'series',
-                width:"100"
+                width:100
             }, {
                 headerName: "Clubs with at least One",
                 field: "atleastone",
@@ -86,12 +86,12 @@ class DivisionReport extends Component {
 
     componentDidMount() {
         Promise.all([
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731167904'),
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731189970'),
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731193982'),
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731204012'),
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731218054'),
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731222066')
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731167904', {retries: 3,retryDelay: 1000}),
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731189970', {retries: 3,retryDelay: 1000}),
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731193982', {retries: 3,retryDelay: 1000}),
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731204012', {retries: 3,retryDelay: 1000}),
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731218054', {retries: 3,retryDelay: 1000}),
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731222066', {retries: 3,retryDelay: 1000})
         ]).then(function (responses) {
             // Get a JSON object from each of the responses
             return Promise.all(responses.map(function (response) {
@@ -141,8 +141,11 @@ class DivisionReport extends Component {
                         dataByOfficer[group]["verified"] = (dataByOfficer[group]["verified"] || 0) + 1;
                     }
                     else {
-                        dataByOfficer[group]["registered"] = calculateSignups(dataByOfficer[group]);
+                        if (new Date().getTime() < new Date(singleRow["startTime"]).getTime()){
+                            dataByOfficer[group]["registered"] = calculateSignups(dataByOfficer[group]);
+                        }
                     }
+
                     dataByOfficer[group]["missing"] = dataByOfficer[group]["signuptotal"] - (dataByOfficer[group]["registered"] || 0) - (dataByOfficer[group]["verified"] || 0);
                     dataByOfficer[group]["atleastone"] = calculateSignups(dataByOfficer[group]) > 0;
                     dataByOfficer[group]["fourormore"] = calculateSignups(dataByOfficer[group]) > 3;

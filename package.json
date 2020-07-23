@@ -12,6 +12,7 @@
     "ag-grid-react": "^23.2.1",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
+    "fetch-retry": "^4.0.1",
     "gulp": "^4.0.2",
     "history": "4.10.1",
     "node-sass": "4.13.1",

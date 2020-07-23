@@ -37,6 +37,7 @@ class HomeReport extends Component {
                 sortable: true,
                 filter: true,
                 resizable: true,
+                width:150
             },
             popupParent: document.body,
             processChartOptions: this.processChartOptions,
@@ -119,7 +120,6 @@ class HomeReport extends Component {
             { colId: 'division', sort: 'asc' }
         ];
         params.api.setSortModel(defaultSortModel);
-        params.api.sizeColumnsToFit();
         params.api.resetRowHeights();
         var cellRange = {
             rowStartIndex: 0,
@@ -152,7 +152,6 @@ class HomeReport extends Component {
                     opts.yAxis.title.text = "% of Total";
                     opts.yAxis.title.enabled = true;
                 }
-                console.log(opts);
                 return opts;
             },
         };
@@ -162,12 +161,12 @@ class HomeReport extends Component {
 
     componentDidMount() {
         Promise.all([
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731167904'),
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731189970'),
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731193982'),
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731204012'),
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731218054'),
-            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731222066')
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731167904', {retries: 3,retryDelay: 1000}),
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731189970', {retries: 3,retryDelay: 1000}),
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731193982', {retries: 3,retryDelay: 1000}),
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731204012', {retries: 3,retryDelay: 1000}),
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731218054', {retries: 3,retryDelay: 1000}),
+            fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731222066', {retries: 3,retryDelay: 1000})
         ]).then(function (responses) {
             // Get a JSON object from each of the responses
             return Promise.all(responses.map(function (response) {
@@ -217,7 +216,9 @@ class HomeReport extends Component {
                         dataByOfficer[group]["verified"] = (dataByOfficer[group]["verified"] || 0) + 1;
                     }
                     else {
-                        dataByOfficer[group]["registered"] = calculateSignups(dataByOfficer[group]);
+                        if (new Date().getTime() < new Date(singleRow["startTime"]).getTime()){
+                            dataByOfficer[group]["registered"] = calculateSignups(dataByOfficer[group]);
+                        }
                     }
                     dataByOfficer[group]["missing"] = dataByOfficer[group]["signuptotal"] - (dataByOfficer[group]["registered"] || 0) - (dataByOfficer[group]["verified"] || 0);
                     return dataByOfficer;
@@ -412,17 +413,17 @@ class HomeReport extends Component {
         return (
             <div style={{ width: '100%', height: '100%' }}>
                 <p style={{
-                    "margin-left":"50px",
-                    "text-transform":"uppercase",
-                    "font-size":"1rem"
+                    "marginLeft":"50px",
+                    "textTransform":"uppercase",
+                    "fontSize":"1rem"
                 }}>
                     Toastmasters District 46: TLI Club Officer Training Status Report
                 </p>
                 <div id="myChart" className="ag-theme-alpine my-chart"></div>
                 <p style={{
-                    "margin-left":"50px",
-                    "text-transform":"uppercase",
-                    "font-size":"1rem"
+                    "marginLeft":"50px",
+                    "textTransform":"uppercase",
+                    "fontSize":"1rem"
                 }}>
                     Club Registration Status Report - Detailed reporting can be found <a href="/tli-reports-live">here</a>
                 </p>
@@ -432,7 +433,7 @@ class HomeReport extends Component {
                         id="myGrid"
                         style={{
                             height: this.getHeight(),
-                            width: '100%',
+                            width: "100%",
                         }}
                         className="ag-theme-alpine"
                     >

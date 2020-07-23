@@ -4926,6 +4926,11 @@ fbjs@^0.8.1:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.18"
 
+fetch-retry@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/fetch-retry/-/fetch-retry-4.0.1.tgz#ca746666399aaf0547aa3851ccb543cfb112b8da"
+  integrity sha512-EhIeVBkq9T2z1ANDr2kmLujoHOTdLvR9t/nzLSdX4PMIFinLyyZFYX9T6Fb3LrbiHQEhujq1O7ElsqjuqYIsEA==
+
 figgy-pudding@^3.5.1:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/figgy-pudding/-/figgy-pudding-3.5.2.tgz#b4eee8148abb01dcf1d1ac34367d59e12fa61d6e"
