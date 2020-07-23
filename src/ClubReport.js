@@ -150,13 +150,13 @@ class ClubReport extends Component {
 
   componentDidMount() {
     Promise.all([
-      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731167904'),
-      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731189970'),
-      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731193982'),
-      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731204012'),
-      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731218054'),
-      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731222066')
-    ]).then(function (responses) {
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731167904', {retries: 3,retryDelay: 1000}),
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731189970', {retries: 3,retryDelay: 1000}),
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731193982', {retries: 3,retryDelay: 1000}),
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731204012', {retries: 3,retryDelay: 1000}),
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731218054', {retries: 3,retryDelay: 1000}),
+      fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731222066', {retries: 3,retryDelay: 1000})
+  ]).then(function (responses) {
       // Get a JSON object from each of the responses
       return Promise.all(responses.map(function (response) {
         return response.json();
@@ -165,11 +165,17 @@ class ClubReport extends Component {
         return Array.prototype.concat(answerObjects, response);
       }, [])
     ).then(data => {
-        var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46").reduce(
+        var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46")
+        .filter(s => s["checked_in"] || new Date().getTime() < new Date(s["startTime"]).getTime())
+        .reduce(
           function(dataByOfficer, singleRow){
-            const value = singleRow["first_name"];
+            let value = singleRow["first_name"];
             const role = singleRow["role"]
             const group = singleRow["clubName"];
+
+            if (singleRow["checked_in"]) {
+              value = "ATTENDED";
+            }
 
             if (!dataByOfficer[group]){
                 dataByOfficer[group] = {
@@ -179,7 +185,7 @@ class ClubReport extends Component {
                     "signuptotal" : 7
                 };
             }
-            if (!dataByOfficer[group][role]){
+            if (!dataByOfficer[group][role] || value === "ATTENDED"){
                 dataByOfficer[group][role] = value;
             }
             else {
