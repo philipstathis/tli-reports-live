@@ -42,6 +42,7 @@ class UserProfile extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    document.body.classList.add("white-content");
   }
 
   handleChange(e) {
@@ -122,7 +123,7 @@ class UserProfile extends React.Component {
           <Col md="12">
               <Card>
                 <CardHeader>
-                  <h5 className="title">Please complete the information below to Confirm Attendance</h5>
+                  <h3 className="title">Step 1. Fill in the 2 Boxes Below and Click Check-In</h3>
                 </CardHeader>
                   <Form
                     method={this.props.method}
@@ -131,7 +132,7 @@ class UserProfile extends React.Component {
                     <Row>
                       <Col className="pr-md-1" md="6">
                         <FormGroup>
-                          <label>Event Access Code (Shared during Training)</label>
+                          <label>Event Access Code (6 digit number - Shared During Training)</label>
                           <Input
                             placeholder="accesscode"
                             type="text"
@@ -144,7 +145,7 @@ class UserProfile extends React.Component {
                       <Col className="pl-md-1" md="6">
                         <FormGroup>
                           <label htmlFor="exampleInputEmail1">
-                            Attendee Email address (Same one used in Eventbrite)
+                            Your Email Address (Same one used in Eventbrite)
                           </label>
                           <Input placeholder="mike@email.com"
                                  type="email"
@@ -167,7 +168,7 @@ class UserProfile extends React.Component {
             <Col md="12">
               <Card className="card-user">
                 <CardHeader>
-                  <h5 className="title">Let us know how it went! Your name won't appear in the evaluation!</h5>
+                  <h3 className="title">Step 2: Fill out the anonymous survey!</h3>
                 </CardHeader>
                 <CardText>
                 <iframe title="Anonymous evaluation" src="https://docs.google.com/forms/d/e/1FAIpQLSdXV-PrmBnVumIFYUrAM8PxYDaFu0jLNF1IlMWO5Q3V_-edow/viewform?embedded=true" width="100%" height="600em" frameBorder="0" marginHeight="0" marginWidth="0">Loading…</iframe>
