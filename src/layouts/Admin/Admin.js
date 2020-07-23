@@ -123,10 +123,13 @@ class Admin extends React.Component {
             ref="mainPanel"
             data={this.state.backgroundColor}
           ><Route path="/tli-reports-live" search="?attendee-check-in" ><UserProfile/></Route> 
-          </div>: (
+          </div>: ( <> {this.props.location.search.indexOf("?embed") > -1 ?
+          <div
+          ref="mainPanel"
+          data={this.state.backgroundColor}
+        ><Route path="/tli-reports-live" search="?embed" ><HomeReport/></Route></div> : (
         <div className="wrapper">
-            {this.props.location.search.indexOf("?embed") > -1 ? null : (
-               <Sidebar
+              <Sidebar
                {...this.props}
                routes={routes}
                bgColor={this.state.backgroundColor}
@@ -136,7 +139,7 @@ class Admin extends React.Component {
                  imgSrc: logo
                }}
                toggleSidebar={this.toggleSidebar}
-             />)}
+             />
           <div
             className="main-panel"
             ref="mainPanel"
@@ -158,9 +161,6 @@ class Admin extends React.Component {
               {this.props.location.search.indexOf("attendee-check-in") === -1 ? null : (
                 <Route path="/tli-reports-live" search="?attendee-check-in" ><UserProfile/></Route>
               )}
-              {this.props.location.search.indexOf("embed") === -1 ? null : (
-                <Route path="/tli-reports-live" search="?embed" ><HomeReport/></Route>
-              )}
               {this.props.location.search.indexOf("wip") === -1 ? null : (
                 <Route path="/tli-reports-live" search="?wip" ><WipView/></Route>
               )}
@@ -168,8 +168,9 @@ class Admin extends React.Component {
               <Redirect from="*" to="/tli-reports-live"/>
             </Switch>
           </div>
-        </div>)}
-      </>
+        </div>)}</>)
+    }
+    </>
     );
   }
 }

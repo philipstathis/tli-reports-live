@@ -411,17 +411,22 @@ class HomeReport extends Component {
     render() {
         return (
             <div style={{ width: '100%', height: '100%' }}>
-                <h1> </h1>
+                <p style={{
+                    "margin-left":"50px",
+                    "text-transform":"uppercase",
+                    "font-size":"1rem"
+                }}>
+                    Toastmasters District 46: TLI Club Officer Training Status Report
+                </p>
                 <div id="myChart" className="ag-theme-alpine my-chart"></div>
                 <p style={{
                     "margin-left":"50px",
                     "text-transform":"uppercase",
                     "font-size":"1rem"
                 }}>
-                    Club Registration Status Report
+                    Club Registration Status Report - Detailed reporting can be found <a href="/tli-reports-live">here</a>
                 </p>
                 <DivisionReport/>
-                <h1> </h1>
                 <div style={{display: "none"}}>
                     <div
                         id="myGrid"
@@ -444,15 +449,7 @@ class HomeReport extends Component {
                         />
                     </div>
                 </div>
-                <p style={{
-                    "margin-left":"50px",
-                    "text-transform":"uppercase",
-                    "font-size":"1rem"
-                }}>
-                    For detailed reporting and source please click <a href="https://philipstathis.github.io/tli-reports-live">here</a>
-                </p>
-            </div>
-        );
+        </div>);
     }
 }
 var currentChartRef;
