@@ -76,7 +76,7 @@ class UserProfile extends React.Component {
 
        if (!(lastAtPos < lastDotPos && lastAtPos > 0 && attendeeEmail.indexOf('@@') === -1 && lastDotPos > 2 && (attendeeEmail.length - lastDotPos) > 2)) {
           formIsValid = false;
-          errors["attendeeEmail"] = "attendeeEmail is not valid";
+          errors["attendeeEmail"] = "Please enter the Email you used to register on Eventbrite";
         }
     }  
 
@@ -90,6 +90,7 @@ class UserProfile extends React.Component {
       alert("Please fill out both the event password and your e-mail.")
     }
     else {
+      this.setState({disabled: true, completeMessage: 'Processing...'});
       fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/todos', {
           headers: {
               'Accept': 'application/json',
@@ -101,13 +102,16 @@ class UserProfile extends React.Component {
           }),
           method: 'POST'
       }).then( response => response.json()).then(res => {
-        console.log(res);
         if (res.id){
           this.setState({disabled: true, completeMessage: 'Check-In Complete, Thank You!'});
         }else {
           alert("Message failed to send. Did you enter the Correct Access Code? E-mail district46officerstraining@gmail.com for support.");
+          this.setState({disabled: false, completeMessage: 'Check In'});
         }
-      }).catch(e => console.log(e));
+      }).catch(e => {
+        console.log(e);
+        this.setState({disabled: false, completeMessage: 'Check In'});
+      });
     }
   }
 
