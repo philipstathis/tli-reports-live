@@ -12,11 +12,11 @@ class ClubReport extends Component {
       columnDefs: [{
         headerName: "Toastmasters Division", field: "division", sort: 'asc', chartDataType: 'category', rowGroup: true, hide: true
       },{
-        headerName: 'Registration (%)',
+        headerName: 'Registered But Not Yet Attended (%)',
         colId: 'registration-percent',
         chartDataType: 'series',
         valueGetter: function(params) {
-          return Math.round(((params.getValue("registered") + params.getValue("verified")) / params.getValue("signuptotal")) * 100);
+          return Math.round((params.getValue("registered") / (params.getValue("signuptotal") - params.getValue("verified")) ) * 100);
         },
       },{
         headerName: "Registered", field: "registered", chartDataType: 'series', aggFunc: 'sum', hide:true
@@ -222,8 +222,8 @@ class ClubReport extends Component {
                 return output;
             }
 
-            dataByOfficer[group]["verified"] = calculateVerifiedSignups(dataByOfficer[group]);
-            dataByOfficer[group]["registered"] = calculateSignups(dataByOfficer[group]);
+            dataByOfficer[group]["verified"] = calculateVerifiedSignups((dataByOfficer[group] || 0));
+            dataByOfficer[group]["registered"] = calculateSignups((dataByOfficer[group] || 0));
 
             dataByOfficer[group]["missing"] = dataByOfficer[group]["signuptotal"] - ((dataByOfficer[group]["registered"] || 0) + (dataByOfficer[group]["verified"] || 0));
             dataByOfficer[group]["atleastone"] = calculateSignups(dataByOfficer[group]) > 0;
@@ -244,6 +244,9 @@ class ClubReport extends Component {
               "clubName" : club["clubName"],
               "signups" : "0/7",
               "verifiedfraction" : "0/7",
+              "missing": 7,
+              "verified": 0,
+              "registered": 0,
               "signuptotal" : 7
           };
           }
