@@ -16,7 +16,7 @@ class ClubReport extends Component {
         colId: 'registration-percent',
         chartDataType: 'series',
         valueGetter: function(params) {
-          return Math.round((params.getValue("registered") / (params.getValue("signuptotal") - params.getValue("verified")) ) * 100);
+          return Math.round((params.getValue("registered") / params.getValue("signuptotal") * 100));
         },
       },{
         headerName: "Registered", field: "registered", chartDataType: 'series', aggFunc: 'sum', hide:true
