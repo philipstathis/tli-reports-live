@@ -16,10 +16,10 @@ class ClubReport extends Component {
         colId: 'registration-percent',
         chartDataType: 'series',
         valueGetter: function(params) {
-          return Math.round((params.getValue("signupcount") / params.getValue("signuptotal")) * 100);
+          return Math.round(((params.getValue("registered") + params.getValue("verified")) / params.getValue("signuptotal")) * 100);
         },
       },{
-        headerName: "Registered", field: "signupcount", chartDataType: 'series', aggFunc: 'sum', hide:true
+        headerName: "Registered", field: "registered", chartDataType: 'series', aggFunc: 'sum', hide:true
       },{
         headerName: "Total", field: "signuptotal", chartDataType: 'series', aggFunc: 'sum', hide:true
       },{
@@ -27,7 +27,9 @@ class ClubReport extends Component {
       },{
         headerName: "Toastmasters Club Name", field: "clubName", sortable: true, sort: 'asc'
       },{
-        headerName: "Signed Up", field: "signups"
+        headerName: "Attended", field: "verifiedfraction"
+      },{
+        headerName: "Signed Up But Not Attended", field: "signups"
       },{
         headerName: "President", field: "President"
       },{
@@ -168,47 +170,69 @@ class ClubReport extends Component {
         var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46")
         .filter(s => s["checked_in"] || new Date().getTime() < new Date(s["startTime"]).getTime())
         .reduce(
-          function(dataByOfficer, singleRow){
+          function (dataByOfficer, singleRow) {
             let value = singleRow["first_name"];
             const role = singleRow["role"]
             const group = singleRow["clubName"];
+            const attended = "ATTENDED";
 
             if (singleRow["checked_in"]) {
-              value = "ATTENDED";
+                value = attended;
             }
-
-            if (!dataByOfficer[group]){
+            if (!dataByOfficer[group]) {
                 dataByOfficer[group] = {
-                    "division" : singleRow["division"],
-                    "area" : singleRow["area"],
-                    "clubName" : singleRow["clubName"],
-                    "signuptotal" : 7
+                    "division": singleRow["division"],
+                    "area": singleRow["area"],
+                    "clubName": singleRow["clubName"],
+                    "signuptotal": 7,
+                    "missing": 7,
+                    "verified": 0
                 };
             }
-            if (!dataByOfficer[group][role] || value === "ATTENDED"){
+            if (!dataByOfficer[group][role] || value === attended){
                 dataByOfficer[group][role] = value;
             }
             else {
-                if (dataByOfficer[group][role] !== value){
+                if (dataByOfficer[group][role] !== value && new Date().getTime() < new Date(singleRow["startTime"]).getTime()){
                   dataByOfficer[group][role] = dataByOfficer[group][role] + ',' + value;
                 }
             }
 
             function calculateSignups(record) {
-              let output = 0;
-              if (record["President"]) { output++;}
-              if (record["Vice President of Education"]) { output++;}
-              if (record["Secretary"]) { output++;}
-              if (record["Vice President of Membership"]) { output++;}
-              if (record["Vice President of PR"]) { output++;}
-              if (record["Treasurer"]) { output++;}
-              if (record["Sergeant at Arms"]) { output++;}
-              return output;
+                let output = 0;
+                if (record["President"] && record["President"] !== attended) { output++; }
+                if (record["Vice President of Education"] && record["Vice President of Education"] !== attended) { output++; }
+                if (record["Secretary"] && record["Secretary"] !== attended) { output++; }
+                if (record["Vice President of Membership"] && record["Vice President of Membership"] !== attended) { output++; }
+                if (record["Vice President of PR"] && record["Vice President of PR"] !== attended) { output++; }
+                if (record["Treasurer"] && record["Treasurer"] !== attended) { output++; }
+                if (record["Sergeant at Arms"] && record["Sergeant at Arms"] !== attended) { output++; }
+                return output;
             }
 
+            function calculateVerifiedSignups(record) {
+                let output = 0;
+                if (record["President"] === attended) { output++; }
+                if (record["Vice President of Education"]=== attended) { output++; }
+                if (record["Secretary"] === attended) { output++; }
+                if (record["Vice President of Membership"] === attended) { output++; }
+                if (record["Vice President of PR"] === attended) { output++; }
+                if (record["Treasurer"] === attended) { output++; }
+                if (record["Sergeant at Arms"] === attended) { output++; }
+                return output;
+            }
+
+            dataByOfficer[group]["verified"] = calculateVerifiedSignups(dataByOfficer[group]);
+            dataByOfficer[group]["registered"] = calculateSignups(dataByOfficer[group]);
+
+            dataByOfficer[group]["missing"] = dataByOfficer[group]["signuptotal"] - ((dataByOfficer[group]["registered"] || 0) + (dataByOfficer[group]["verified"] || 0));
+            dataByOfficer[group]["atleastone"] = calculateSignups(dataByOfficer[group]) > 0;
+            dataByOfficer[group]["fourormore"] = calculateSignups(dataByOfficer[group]) > 3;
+            dataByOfficer[group]["allseven"] = calculateSignups(dataByOfficer[group]) === 7;
+            dataByOfficer[group]["verifiedfraction"] = calculateVerifiedSignups(dataByOfficer[group]) + '/7'
             dataByOfficer[group]["signups"] = calculateSignups(dataByOfficer[group]) + '/7'
             return dataByOfficer;
-          }, {});
+        }, {});
         
         const allClubs = this.getStaticClubData();
         allClubs.forEach(club => {
@@ -219,13 +243,13 @@ class ClubReport extends Component {
               "area" : club["area"],
               "clubName" : club["clubName"],
               "signups" : "0/7",
+              "verifiedfraction" : "0/7",
               "signuptotal" : 7
           };
           }
         });
 
         return Object.keys(dataByOfficer).map(function(group){
-            dataByOfficer[group]["signupcount"] = dataByOfficer[group]["signups"].split('/').reduce((p, c) => parseInt(p));
             return dataByOfficer[group];
         });
     })

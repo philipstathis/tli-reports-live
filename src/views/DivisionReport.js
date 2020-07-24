@@ -101,52 +101,64 @@ class DivisionReport extends Component {
             return Array.prototype.concat(answerObjects, response);
         }, [])
         ).then(data => {
-            var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46").reduce(
+            var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46")
+                .reduce(
                 function (dataByOfficer, singleRow) {
-                    const value = singleRow["first_name"];
+                    let value = singleRow["first_name"];
                     const role = singleRow["role"]
                     const group = singleRow["clubName"];
+                    const attended = "ATTENDED";
 
+                    if (singleRow["checked_in"]) {
+                        value = attended;
+                    }
                     if (!dataByOfficer[group]) {
                         dataByOfficer[group] = {
                             "division": singleRow["division"],
                             "area": singleRow["area"],
                             "clubName": singleRow["clubName"],
                             "signuptotal": 7,
+                            "missing": 7,
                             "verified": 0
                         };
                     }
-                    if (!dataByOfficer[group][role]) {
+                    if (!dataByOfficer[group][role] || value === attended){
                         dataByOfficer[group][role] = value;
                     }
                     else {
-                        if (dataByOfficer[group][role] !== value) {
-                            dataByOfficer[group][role] = dataByOfficer[group][role] + ',' + value;
+                        if (dataByOfficer[group][role] !== value && new Date().getTime() < new Date(singleRow["startTime"]).getTime()){
+                          dataByOfficer[group][role] = dataByOfficer[group][role] + ',' + value;
                         }
                     }
 
                     function calculateSignups(record) {
                         let output = 0;
-                        if (record["President"]) { output++; }
-                        if (record["Vice President of Education"]) { output++; }
-                        if (record["Secretary"]) { output++; }
-                        if (record["Vice President of Membership"]) { output++; }
-                        if (record["Vice President of PR"]) { output++; }
-                        if (record["Treasurer"]) { output++; }
-                        if (record["Sergeant at Arms"]) { output++; }
+                        if (record["President"] && record["President"] !== attended) { output++; }
+                        if (record["Vice President of Education"] && record["Vice President of Education"] !== attended) { output++; }
+                        if (record["Secretary"] && record["Secretary"] !== attended) { output++; }
+                        if (record["Vice President of Membership"] && record["Vice President of Membership"] !== attended) { output++; }
+                        if (record["Vice President of PR"] && record["Vice President of PR"] !== attended) { output++; }
+                        if (record["Treasurer"] && record["Treasurer"] !== attended) { output++; }
+                        if (record["Sergeant at Arms"] && record["Sergeant at Arms"] !== attended) { output++; }
                         return output;
                     }
 
-                    if (singleRow["checked_in"]) {
-                        dataByOfficer[group]["verified"] = (dataByOfficer[group]["verified"] || 0) + 1;
-                    }
-                    else {
-                        if (new Date().getTime() < new Date(singleRow["startTime"]).getTime()){
-                            dataByOfficer[group]["registered"] = calculateSignups(dataByOfficer[group]);
-                        }
+                    function calculateVerifiedSignups(record) {
+                        let output = 0;
+                        if (record["President"] === attended) { output++; }
+                        if (record["Vice President of Education"]=== attended) { output++; }
+                        if (record["Secretary"] === attended) { output++; }
+                        if (record["Vice President of Membership"] === attended) { output++; }
+                        if (record["Vice President of PR"] === attended) { output++; }
+                        if (record["Treasurer"] === attended) { output++; }
+                        if (record["Sergeant at Arms"] === attended) { output++; }
+                        return output;
                     }
 
-                    dataByOfficer[group]["missing"] = dataByOfficer[group]["signuptotal"] - (dataByOfficer[group]["registered"] || 0) - (dataByOfficer[group]["verified"] || 0);
+                    dataByOfficer[group]["verified"] = calculateVerifiedSignups(dataByOfficer[group]);
+                    dataByOfficer[group]["registered"] = calculateSignups(dataByOfficer[group]);
+
+                    dataByOfficer[group]["missing"] = dataByOfficer[group]["signuptotal"] - ((dataByOfficer[group]["registered"] || 0) + (dataByOfficer[group]["verified"] || 0));
                     dataByOfficer[group]["atleastone"] = calculateSignups(dataByOfficer[group]) > 0;
                     dataByOfficer[group]["fourormore"] = calculateSignups(dataByOfficer[group]) > 3;
                     dataByOfficer[group]["allseven"] = calculateSignups(dataByOfficer[group]) === 7;
