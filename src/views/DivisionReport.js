@@ -159,9 +159,10 @@ class DivisionReport extends Component {
                     dataByOfficer[group]["registered"] = calculateSignups(dataByOfficer[group]);
 
                     dataByOfficer[group]["missing"] = dataByOfficer[group]["signuptotal"] - ((dataByOfficer[group]["registered"] || 0) + (dataByOfficer[group]["verified"] || 0));
-                    dataByOfficer[group]["atleastone"] = calculateSignups(dataByOfficer[group]) > 0;
-                    dataByOfficer[group]["fourormore"] = calculateSignups(dataByOfficer[group]) > 3;
-                    dataByOfficer[group]["allseven"] = calculateSignups(dataByOfficer[group]) === 7;
+                    const totalSignups = dataByOfficer[group]["verified"] + dataByOfficer[group]["registered"];
+                    dataByOfficer[group]["atleastone"] = totalSignups > 0;
+                    dataByOfficer[group]["fourormore"] = totalSignups > 3;
+                    dataByOfficer[group]["allseven"] = totalSignups === 7;
                     return dataByOfficer;
                 }, {});
 
