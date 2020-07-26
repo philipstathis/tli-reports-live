@@ -12,11 +12,11 @@ class ClubReport extends Component {
       columnDefs: [{
         headerName: "Toastmasters Division", field: "division", sort: 'asc', chartDataType: 'category', rowGroup: true, hide: true
       },{
-        headerName: 'Registered But Not Yet Attended (%)',
+        headerName: 'Verified Attended (%)',
         colId: 'registration-percent',
         chartDataType: 'series',
         valueGetter: function(params) {
-          return Math.round((params.getValue("registered") / params.getValue("signuptotal") * 100));
+          return Math.round((params.getValue("verified") / params.getValue("signuptotal") * 100));
         },
       },{
         headerName: "Registered", field: "registered", chartDataType: 'series', aggFunc: 'sum', hide:true

@@ -438,7 +438,7 @@ class HomeReport extends Component {
                     "textTransform":"uppercase",
                     "fontSize":"1rem"
                 }}>
-                    Club Registration Status Report - Detailed reporting can be found <a href="/tli-reports-live">here</a>
+                    Club Verified and Scheduled Attendance Status Report - Detailed reporting can be found <a href="/tli-reports-live">here</a>
                 </p>
                 <DivisionReport/>
                 <div style={{display: "none"}}>
