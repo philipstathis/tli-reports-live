@@ -16,7 +16,7 @@ class ClubReport extends Component {
         colId: 'registration-percent',
         chartDataType: 'series',
         valueGetter: function(params) {
-          return Math.round((params.getValue("verified") / params.getValue("signuptotal") * 100));
+          return Math.round(((params.getValue("verified") || 0) / params.getValue("signuptotal") * 100));
         },
       },{
         headerName: "Registered", field: "registered", chartDataType: 'series', aggFunc: 'sum', hide:true
@@ -28,6 +28,8 @@ class ClubReport extends Component {
         headerName: "Toastmasters Club Name", field: "clubName", sortable: true, sort: 'asc'
       },{
         headerName: "Attended", field: "verifiedfraction"
+      },{
+        headerName: "Attended No.", field: "verified", aggFunc: 'sum', hide:true
       },{
         headerName: "Signed Up But Not Attended", field: "signups"
       },{
