@@ -123,7 +123,7 @@ class HomeReport extends Component {
         params.api.resetRowHeights();
         var cellRange = {
             rowStartIndex: 0,
-            rowEndIndex: 4,
+            rowEndIndex: 5,
             columns: ['division', 'registered', 'missing', 'verified'],
         };
 
@@ -269,7 +269,18 @@ class HomeReport extends Component {
                 return dataByDivision;
             }, {});
 
-            return Object.keys(dataByDivision).map(group => dataByDivision[group]);
+            const divisionRows = Object.keys(dataByDivision).map(group => dataByDivision[group]);
+
+            const totalRow = divisionRows.reduce((totalRow, d) => {
+                totalRow["division"] = ":Total:";
+                totalRow["verified"] = (totalRow["verified"] || 0) + d["verified"];
+                totalRow["registered"] =(totalRow["registered"] || 0) + d["registered"];
+                totalRow["missing"] = (totalRow["missing"] || 0) + d["missing"];
+                totalRow["signuptotal"] = (totalRow["signuptotal"] || 0) + d["signuptotal"];
+                return totalRow;
+            }, {});
+
+            return Array.prototype.concat(divisionRows, totalRow);
         })
             .then(rowData => this.setState({ rowData }))
             .catch(function (error) {

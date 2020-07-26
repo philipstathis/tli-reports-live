@@ -206,7 +206,21 @@ class DivisionReport extends Component {
                 return dataByDivision;
             }, {});
 
-            return Object.keys(dataByDivision).map(group => dataByDivision[group]);
+            const divisionRows = Object.keys(dataByDivision).map(group => dataByDivision[group]);
+
+            const totalRow = divisionRows.reduce((totalRow, d) => {
+                totalRow["division"] = ":Total:";
+                totalRow["verified"] = (totalRow["verified"] || 0) + d["verified"];
+                totalRow["registered"] =(totalRow["registered"] || 0) + d["registered"];
+                totalRow["missing"] = (totalRow["missing"] || 0) + d["missing"];
+                totalRow["signuptotal"] = (totalRow["signuptotal"] || 0) + d["signuptotal"];
+                totalRow["atleastone"] = (totalRow["atleastone"] || 0) + d["atleastone"];
+                totalRow["fourormore"] = (totalRow["fourormore"] || 0) + d["fourormore"];
+                totalRow["allseven"] = (totalRow["allseven"] || 0) + d["allseven"];
+                return totalRow;
+            }, {});
+
+            return Array.prototype.concat(divisionRows, totalRow);
         })
             .then(rowData => this.setState({ rowData }))
             .catch(function (error) {
@@ -216,7 +230,7 @@ class DivisionReport extends Component {
     }
 
     getHeight() {
-        return 265 + "px";
+        return 320 + "px";
     }
 
     getStaticClubData() {
