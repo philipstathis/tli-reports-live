@@ -5,6 +5,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import '../assets/css/HomeReport.css';
 import DivisionReport from 'views/DivisionReport.js';
+const clubData = require('../variables/clubData');
 
 class HomeReport extends Component {
     constructor(props) {
@@ -239,7 +240,7 @@ class HomeReport extends Component {
                     return dataByOfficer;
                 }, {});
 
-            const allClubs = this.getStaticClubData();
+            const allClubs = clubData.getStaticClubData();
             allClubs.forEach(club => {
                 const group = club["clubName"];
                 if (!(group in dataByOfficer)) {
