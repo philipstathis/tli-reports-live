@@ -105,5 +105,11 @@ module.exports.getStaticClubData = () => {
             { "division": "E", "area": "56", "clubName": "Graybar Club (1436)" },
             { "division": "E", "area": "56", "clubName": "New York Toastmasters Club (1949)" },
             { "division": "E", "area": "56", "clubName": "Girl Scouts of the USA (7202219)" },
+            { "division": "C", "area": "36", "clubName": "Alvarez & Marsal Taxand (077800702)" },
+            { "division": "D", "area": "43", "clubName": "Wafra Toastmasters (6931829)" },
+            { "division": "E", "area": "51", "clubName": "Acuris New York Toastmasters (7580325)" },
+            { "division": "E", "area": "51", "clubName": "The Durst Organization Employees NYC (6732803)" },
+            { "division": "E", "area": "52", "clubName": "NY WAM-OI Toastmasters (7450958)" },
+            { "division": "E", "area": "52", "clubName": "Chubb NYC Toastmasters Club (77665933)" },
         ];
     };
