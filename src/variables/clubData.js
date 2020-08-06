@@ -81,7 +81,7 @@ module.exports.getStaticClubData = () => {
             { "division": "D", "area": "45", "clubName": "World Voices Club (643436)" },
             { "division": "D", "area": "45", "clubName": "Advanced Debaters (3313240)" },
             { "division": "D", "area": "45", "clubName": "Persuasive Toastmasters (4634928)" },
-            { "division": "D", "area": "45", "clubName": "Toastmasters International Club - Elsevier NYC (6660424)" },
+            { "division": "D", "area": "45", "clubName": "Toastmasters Int'l Club - Elsevier NYC (6660424)" },
             { "division": "D", "area": "46", "clubName": "Global Expression Club (5596)" },
             { "division": "D", "area": "46", "clubName": "Pfree Speech Toastmasters Club (7883)" },
             { "division": "D", "area": "46", "clubName": "Travelers NYC (3433011)" },

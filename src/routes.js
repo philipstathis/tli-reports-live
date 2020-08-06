@@ -17,8 +17,6 @@
 */
 import ClubReport from "ClubReport.js";
 import DivisionReport from "views/DivisionReport.js";
-import UserProfile from "views/UserProfile.js";
-import WipView from "views/WipView";
 
 var routes = [
   {
@@ -30,23 +28,9 @@ var routes = [
   },
   {
     path: "?club-report",
-    name: "Registration By Area",
+    name: "Area and Club-level Details",
     icon: "tim-icons icon-chart-bar-32",
     component: ClubReport,
-    layout: "/tli-reports-live"
-  },
-  {
-    path: "?wip",
-    name: "Training Materials",
-    icon: "tim-icons icon-single-copy-04",
-    component: WipView,
-    layout: "/tli-reports-live"
-  },
-  {
-    path: "?attendee-check-in",
-    name: "Event Check-In",
-    icon: "tim-icons icon-single-02",
-    component: UserProfile,
     layout: "/tli-reports-live"
   }
 ];
