@@ -24,6 +24,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import App from "App.js";
 import ClubReport from "ClubReport.js";
+import VerifiedOnly from "VerifiedOnly.js";
 import UserProfile from "views/UserProfile.js";
 // import WipView from "views/WipView.js";
 import HomeReport from "views/HomeReport.js";
@@ -154,6 +155,9 @@ class Admin extends React.Component {
             <Switch>
               {this.props.location.search.indexOf("club-report") === -1 ? null : (
                 <Route path="/tli-reports-live" search="?club-report" ><ClubReport/></Route>
+              )}
+              {this.props.location.search.indexOf("verified-only") === -1 ? null : (
+                <Route path="/tli-reports-live" search="?verified-only" ><VerifiedOnly/></Route>
               )}
               {this.props.location.search.indexOf("attendee-report") === -1 ? null : (
                 <Route path="/tli-reports-live" search="?attendee-report" ><App/></Route>
