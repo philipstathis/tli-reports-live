@@ -38,13 +38,13 @@ class ClubReport extends Component {
       },{
         headerName: "Vice President of Education", field: "Vice President of Education"
       },{
-        headerName: "Secretary", field: "Secretary"
-      },{
         headerName: "Vice President of Membership", field: "Vice President of Membership"
       },{
         headerName: "Vice President of PR", field: "Vice President of PR"
       },{
         headerName: "Treasurer", field: "Treasurer"
+      },{
+        headerName: "Secretary", field: "Secretary"
       },{
         headerName: "Sergeant at Arms", field: "Sergeant at Arms"
       }],
@@ -205,25 +205,25 @@ class ClubReport extends Component {
 
             function calculateSignups(record) {
                 let output = 0;
-                if (record["President"] && record["President"] !== attended) { output++; }
-                if (record["Vice President of Education"] && record["Vice President of Education"] !== attended) { output++; }
-                if (record["Secretary"] && record["Secretary"] !== attended) { output++; }
-                if (record["Vice President of Membership"] && record["Vice President of Membership"] !== attended) { output++; }
-                if (record["Vice President of PR"] && record["Vice President of PR"] !== attended) { output++; }
-                if (record["Treasurer"] && record["Treasurer"] !== attended) { output++; }
-                if (record["Sergeant at Arms"] && record["Sergeant at Arms"] !== attended) { output++; }
+                if (record["President"] && record["President"].indexOf(attended) < 0) { output++; }
+                if (record["Vice President of Education"] && record["Vice President of Education"].indexOf(attended) < 0) { output++; }
+                if (record["Secretary"] && record["Secretary"].indexOf(attended) < 0) { output++; }
+                if (record["Vice President of Membership"] && record["Vice President of Membership"].indexOf(attended) < 0) { output++; }
+                if (record["Vice President of PR"] && record["Vice President of PR"].indexOf(attended) < 0) { output++; }
+                if (record["Treasurer"] && record["Treasurer"].indexOf(attended) < 0) { output++; }
+                if (record["Sergeant at Arms"] && record["Sergeant at Arms"].indexOf(attended) < 0) { output++; }
                 return output;
             }
 
             function calculateVerifiedSignups(record) {
                 let output = 0;
-                if (record["President"] === attended) { output++; }
-                if (record["Vice President of Education"]=== attended) { output++; }
-                if (record["Secretary"] === attended) { output++; }
-                if (record["Vice President of Membership"] === attended) { output++; }
-                if (record["Vice President of PR"] === attended) { output++; }
-                if (record["Treasurer"] === attended) { output++; }
-                if (record["Sergeant at Arms"] === attended) { output++; }
+                if (record["President"] && record["President"].indexOf(attended) > -1) { output++; }
+                if (record["Vice President of Education"] && record["Vice President of Education"].indexOf(attended) > -1) { output++; }
+                if (record["Secretary"] && record["Secretary"].indexOf(attended) > -1) { output++; }
+                if (record["Vice President of Membership"] && record["Vice President of Membership"].indexOf(attended) > -1) { output++; }
+                if (record["Vice President of PR"] && record["Vice President of PR"].indexOf(attended) > -1) { output++; }
+                if (record["Treasurer"] && record["Treasurer"].indexOf(attended) > -1) { output++; }
+                if (record["Sergeant at Arms"] && record["Sergeant at Arms"].indexOf(attended) > -1) { output++; }
                 return output;
             }
 
