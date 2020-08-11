@@ -16,6 +16,7 @@
 
 */
 import ClubReport from "ClubReport.js";
+import ClubOfficers from "ClubOfficers.js";
 import DivisionReport from "views/DivisionReport.js";
 
 var routes = [
@@ -31,6 +32,13 @@ var routes = [
     name: "Area and Club-level Details",
     icon: "tim-icons icon-chart-bar-32",
     component: ClubReport,
+    layout: "/tli-reports-live"
+  },
+  {
+    path: "?club-officers",
+    name: "Officer Level Details",
+    icon: "tim-icons icon-chart-bar-32",
+    component: ClubOfficers,
     layout: "/tli-reports-live"
   }
 ];

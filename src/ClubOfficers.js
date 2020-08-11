@@ -26,6 +26,8 @@ class ClubOfficers extends Component {
         }, sortable: true, filter: true, resizable: true
       },{
         headerName: "First Name", field: "first_name", sortable: true, filter: true, resizable: true,  enableRowGroup: true, 
+      },{
+        headerName: "Attended", enableRowGroup: true, sortable: true, filter: true, resizable: true, field: "checked_in"
       }],
       statusBar: {
         statusPanels: [

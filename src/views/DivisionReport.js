@@ -104,8 +104,10 @@ class DivisionReport extends Component {
             return Array.prototype.concat(answerObjects, response);
         }, [])
         ).then(data => {
-            var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46").filter(s => s["clubName"] !== "g-Toastmasters (5589856)")
-                .reduce(
+            var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46")
+            .filter(s => s["clubName"] !== "g-Toastmasters (5589856)")
+            .filter(s => s["checked_in"] || new Date().getTime() < new Date(s["startTime"]).getTime())
+            .reduce(
                 function (dataByOfficer, singleRow) {
                     let value = singleRow["first_name"];
                     const role = singleRow["role"]

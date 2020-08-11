@@ -124,14 +124,15 @@ module.exports.getConfirmedClubAttendees = (data) => {
         const role = singleRow["role"]
         const group = singleRow["clubName"] + role;
 
-        if (!dataByOfficer[group] && singleRow["checked_in"]){
+        if (!dataByOfficer[group] || !dataByOfficer[group]["checked_in"]){
             dataByOfficer[group] = {
                 "division": singleRow["division"],
                 "area": singleRow["area"],
                 "clubName": singleRow["clubName"],
                 "role": role,
                 "startTime": singleRow["startTime"],
-                "first_name": value
+                "first_name": value,
+                "checked_in" : singleRow["checked_in"]
             };
         }
 
