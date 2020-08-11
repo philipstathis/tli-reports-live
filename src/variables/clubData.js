@@ -113,4 +113,66 @@ module.exports.getStaticClubData = () => {
             { "division": "E", "area": "52", "clubName": "NY WAM-OI Toastmasters (7450958)" },
             { "division": "E", "area": "52", "clubName": "Chubb NYC Toastmasters Club (77665933)" },
         ];
-    };
+};
+
+module.exports.getConfirmedClubAttendees = (data) => {
+    var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46").filter(s => s["clubName"] !== "g-Toastmasters (5589856)")
+    .filter(s => s["checked_in"] || new Date().getTime() < new Date(s["startTime"]).getTime())
+    .reduce(
+      function (dataByOfficer, singleRow) {
+        let value = singleRow["first_name"];
+        const role = singleRow["role"]
+        const group = singleRow["clubName"] + role;
+
+        if (!dataByOfficer[group] && singleRow["checked_in"]){
+            dataByOfficer[group] = {
+                "division": singleRow["division"],
+                "area": singleRow["area"],
+                "clubName": singleRow["clubName"],
+                "role": role,
+                "startTime": singleRow["startTime"],
+                "first_name": value
+            };
+        }
+
+        return dataByOfficer;
+    }, {});
+    
+    const allClubs = this.getStaticClubData();
+    allClubs.forEach(club => {
+      this.backFillOfficerRoles(club, "President", dataByOfficer);
+      this.backFillOfficerRoles(club, "Vice President of Education", dataByOfficer);
+      this.backFillOfficerRoles(club, "Secretary", dataByOfficer);
+      this.backFillOfficerRoles(club, "Vice President of Membership", dataByOfficer);
+      this.backFillOfficerRoles(club, "Vice President of PR", dataByOfficer);
+      this.backFillOfficerRoles(club, "Treasurer", dataByOfficer);
+      this.backFillOfficerRoles(club, "Sergeant at Arms", dataByOfficer);
+    });
+
+    Object.keys(dataByOfficer).forEach(group => {
+        let club = dataByOfficer[group];
+        this.backFillOfficerRoles(club, "President", dataByOfficer);
+        this.backFillOfficerRoles(club, "Vice President of Education", dataByOfficer);
+        this.backFillOfficerRoles(club, "Secretary", dataByOfficer);
+        this.backFillOfficerRoles(club, "Vice President of Membership", dataByOfficer);
+        this.backFillOfficerRoles(club, "Vice President of PR", dataByOfficer);
+        this.backFillOfficerRoles(club, "Treasurer", dataByOfficer);
+        this.backFillOfficerRoles(club, "Sergeant at Arms", dataByOfficer);
+      });
+
+    return Object.keys(dataByOfficer).map(function(group){
+        return dataByOfficer[group];
+    });
+};
+
+module.exports.backFillOfficerRoles = (club, role, dataByOfficer) => {
+    let group = club["clubName"] + role;
+    if (!(group in dataByOfficer)){
+        dataByOfficer[group] = {
+          "division" : club["division"],
+          "area" : club["area"],
+          "clubName" : club["clubName"],
+          "role": role
+      };
+    }
+};
