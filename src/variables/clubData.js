@@ -162,6 +162,16 @@ module.exports.getConfirmedClubAttendees = (data) => {
       });
 
     return Object.keys(dataByOfficer).map(function(group){
+        if (dataByOfficer[group]["checked_in"]) {
+          dataByOfficer[group]["status"] = "Attended"
+        }
+        else if (dataByOfficer[group]["checked_in"] === false) {
+          dataByOfficer[group]["status"] = "Future Date"
+        }
+        else {
+          dataByOfficer[group]["status"] = "Never Registered"
+        }
+
         return dataByOfficer[group];
     });
 };

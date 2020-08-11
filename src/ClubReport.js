@@ -34,19 +34,19 @@ class ClubReport extends Component {
       },{
         headerName: "Signed Up But Not Attended", field: "signups"
       },{
-        headerName: "President", field: "President"
+        headerName: "Pres", field: "President"
       },{
-        headerName: "Vice President of Education", field: "Vice President of Education"
+        headerName: "VPE", field: "Vice President of Education"
       },{
-        headerName: "Vice President of Membership", field: "Vice President of Membership"
+        headerName: "VPM", field: "Vice President of Membership"
       },{
-        headerName: "Vice President of PR", field: "Vice President of PR"
+        headerName: "VPPR", field: "Vice President of PR"
       },{
-        headerName: "Treasurer", field: "Treasurer"
+        headerName: "Secr", field: "Secretary"
       },{
-        headerName: "Secretary", field: "Secretary"
+        headerName: "Treas", field: "Treasurer"
       },{
-        headerName: "Sergeant at Arms", field: "Sergeant at Arms"
+        headerName: "SAA", field: "Sergeant at Arms"
       }],
       statusBar: {
         statusPanels: [
