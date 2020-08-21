@@ -14,10 +14,17 @@ class ClubReport extends Component {
         headerName: "Toastmasters Division", field: "division", sort: 'asc', chartDataType: 'category', rowGroup: true, hide: true
       },{
         headerName: 'Verified Attended (%)',
-        colId: 'registration-percent',
+        colId: 'verified-percent',
         chartDataType: 'series',
         valueGetter: function(params) {
           return Math.round(((params.getValue("verified") || 0) / params.getValue("signuptotal") * 100));
+        },
+      },{
+        headerName: 'Attended And Future (%)',
+        colId: 'registration-percent',
+        chartDataType: 'series', hide:true,
+        valueGetter: function(params) {
+          return Math.round(( ((params.getValue("verified") || 0) + (params.getValue("registered") || 0)) / params.getValue("signuptotal") * 100));
         },
       },{
         headerName: "Registered", field: "registered", chartDataType: 'series', aggFunc: 'sum', hide:true
