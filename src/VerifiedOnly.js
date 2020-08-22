@@ -155,7 +155,7 @@ class VerifiedOnly extends Component {
         return Array.prototype.concat(answerObjects, response);
       }, [])
     ).then(data => {
-        var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46").filter(s => s["clubName"] !== "g-Toastmasters (5589856)")
+        var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46").filter(s => clubData.filterInvalid(s))
         .filter(s => s["checked_in"] && new Date().getTime() > new Date(s["startTime"]).getTime())
         .reduce(
           function (dataByOfficer, singleRow) {
@@ -222,7 +222,7 @@ class VerifiedOnly extends Component {
             return dataByOfficer;
         }, {});
         
-        const allClubs = clubData.getStaticClubData();
+        const allClubs = clubData.getLatestStaticClubData();
         allClubs.forEach(club => {
           const group = club["clubName"];
           if (!(group in dataByOfficer)){
@@ -236,8 +236,11 @@ class VerifiedOnly extends Component {
               "verified": 0,
               "registered": 0,
               "signuptotal" : 7
-          };
+            };
           }
+          // handle re-districting
+          dataByOfficer[group]["area"] = club["area"];
+          dataByOfficer[group]["division"] = club["division"];
         });
 
         return Object.keys(dataByOfficer).map(function(group){
