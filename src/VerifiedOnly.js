@@ -11,11 +11,35 @@ class VerifiedOnly extends Component {
     super(props);
     this.state = {
       columnDefs: [{
-        headerName: "Toastmasters Division", field: "division", sort: 'asc', chartDataType: 'category'
+        headerName: "Division", field: "division", sort: 'asc', chartDataType: 'category'
       },{
-        headerName: "Toastmasters Area", field: "area",  sort: 'asc', chartDataType: 'category'
+        headerName: "Area", field: "area",  sort: 'asc', chartDataType: 'category'
       },{
-        headerName: "Toastmasters Club Name", field: "clubName", sortable: true
+        headerName: "Club Name", field: "clubName", sortable: true
+      },{
+        headerName: "Dashboard Shows", field: "trained", sortable: true
+      },{
+        headerName: "Eventbrite Shows",
+        valueGetter: function(params) {
+          return parseInt(params.getValue("President") || 0) + 
+            parseInt(params.getValue("Vice President of Education") || 0) +
+            parseInt(params.getValue("Vice President of Membership") || 0) +
+            parseInt(params.getValue("Vice President of PR") || 0) +
+            parseInt(params.getValue("Secretary") || 0) +
+            parseInt(params.getValue("Treasurer") || 0) +
+            parseInt(params.getValue("Sergeant at Arms") || 0);
+        },sortable: true
+      },{
+        headerName: "Needs Update",
+        valueGetter: function(params) {
+          return parseInt(params.getValue("President") || 0) + 
+          parseInt(params.getValue("Vice President of Education") || 0) +
+          parseInt(params.getValue("Vice President of Membership") || 0) +
+          parseInt(params.getValue("Vice President of PR") || 0) +
+          parseInt(params.getValue("Secretary") || 0) +
+          parseInt(params.getValue("Treasurer") || 0) +
+          parseInt(params.getValue("Sergeant at Arms") || 0) - params.getValue("trained");
+        },sortable: true
       },{
         headerName: "Pres", field: "President"
       },{
@@ -134,9 +158,11 @@ class VerifiedOnly extends Component {
       { colId: 'clubName', sort: 'asc' }
     ];
     params.api.setSortModel(defaultSortModel);
+    params.api.resetRowHeights();
+    params.api.sizeColumnsToFit();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     Promise.all([
       fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731167904', {retries: 4,retryDelay: 1000}),
       fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/events/110731189970', {retries: 4,retryDelay: 2000}),
@@ -154,14 +180,14 @@ class VerifiedOnly extends Component {
     }).then(data => data.reduce(function (answerObjects, response) {
         return Array.prototype.concat(answerObjects, response);
       }, [])
-    ).then(data => {
+    ).then(async data => {
         var dataByOfficer = data.filter(s => s["division"] !== "Outside District 46").filter(s => clubData.filterInvalid(s))
         .filter(s => s["checked_in"] && new Date().getTime() > new Date(s["startTime"]).getTime())
         .reduce(
           function (dataByOfficer, singleRow) {
             let value = singleRow["first_name"];
             const role = singleRow["role"]
-            const group = singleRow["clubName"];
+            const group = clubData.getClubNumber(singleRow["clubName"]);
             const attended = "1";
 
             if (singleRow["checked_in"]) {
@@ -222,9 +248,9 @@ class VerifiedOnly extends Component {
             return dataByOfficer;
         }, {});
         
-        const allClubs = clubData.getLatestStaticClubData();
+        const allClubs = await clubData.getLiveStaticClubData();
         allClubs.forEach(club => {
-          const group = club["clubName"];
+          const group = club.clubNumber;
           if (!(group in dataByOfficer)){
             dataByOfficer[group] = {
               "division" : club["division"],
@@ -239,8 +265,10 @@ class VerifiedOnly extends Component {
             };
           }
           // handle re-districting
-          dataByOfficer[group]["area"] = club["area"];
-          dataByOfficer[group]["division"] = club["division"];
+          dataByOfficer[group]["clubName"] = club["clubName"];
+          dataByOfficer[group]["area"] = club["Area"];
+          dataByOfficer[group]["division"] = club["Division"];
+          dataByOfficer[group]["trained"] = club.trained;
         });
 
         return Object.keys(dataByOfficer).map(function(group){

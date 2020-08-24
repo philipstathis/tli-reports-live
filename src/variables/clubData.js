@@ -232,6 +232,27 @@ module.exports.getLatestStaticClubData = () => {
   ];
 };
 
+module.exports.getLiveStaticClubData = async () => {
+  const response = await fetch('https://a5slwb8wx6.execute-api.us-east-1.amazonaws.com/dev/clubs', {retries: 4,retryDelay: 1000}); 
+  const records = await response.json();
+  return records.filter(c => c["Club Status"] === "Active").map(c => {
+    let r = c;
+    r.clubName = r["Club Name"] + " (" + r["Club Number"] + ")";
+    r.clubNumber = parseInt(r["Club Number"]);
+    r.trained = parseInt(r["Off. Trained Round 1"]);
+    return r;
+  });
+}
+
+module.exports.getClubNumber = (clubName) => {
+  const firstParens = clubName.lastIndexOf('(');
+  const lastParens = clubName.lastIndexOf(')');
+  const result = parseInt(clubName.substring(firstParens + 1, lastParens));
+  // This is a misentered row, that needs to be patched
+  if (result === 77665933) { return 7766593; }
+  return result;
+};
+
 module.exports.filterInvalid = (s) => {
   let valid = s["clubName"] !== "g-Toastmasters (5589856)";
   valid = valid && s["first_name"] !== "Catherine B";
