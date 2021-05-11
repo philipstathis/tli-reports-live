@@ -10,7 +10,7 @@
     "ag-grid-community": "^23.2.1",
     "ag-grid-enterprise": "^23.2.1",
     "ag-grid-react": "^23.2.1",
-    "chart.js": "2.9.3",
+    "chart.js": "2.9.4",
     "classnames": "2.2.6",
     "fetch-retry": "^4.0.1",
     "gh-pages": "^3.1.0",
